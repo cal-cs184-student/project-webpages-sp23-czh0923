@@ -1,149 +1,347 @@
-<html>
-	<head>
-		<style>
-			body {
-				padding: 100px;
-				width: 1000px;
-				margin: auto;
-				text-align: left;
-				font-weight: 300;
-				font-family: 'Open Sans', sans-serif;
-				color: #121212;
-			}
-			h1, h2, h3, h4 {
-				font-family: 'Source Sans Pro', sans-serif;
-			}
-		</style>
-		<title>CS 184 MeshEdit</title>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
-	
-		<link rel="stylesheet" href="style.css">
-		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
-	</head>
-	<body>
-		Project 2 here
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style>
+  body {
+    background-color: white;
+    padding: 100px;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    color: #121212;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+  kbd {
+    color: #121212;
+  }
+</style>
+<title>CS 184 Mesh Edit</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
 
-		<h3 align="middle">Part 4: Edge Flip </h3>
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script>
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
 
-		<p>
-			For this part, our implementation followed several steps. 
-			First, we check if the targeted edge is on the boundary. If it is, we do nothing, since flipping an edge on the boundary doesn't make sense. 
-			If it's not, we proceed to edge flip. 
-			We first collect all elements (including halfedges, edges, vertices, and faces) using the left diagram below. 
-			Elements are collected following the Half-Edge Data Structure. For example, to get h3, we call twin on h0; to get h1, we call next on h0; to get e0, we call edge on h0; and to get f0, we call face on h0.
-			Then, we reassign all elements according to the right diagram. 
-		
-		</p>
-
-
-		<table>
-			<tr>
-				<td>
-				<img src="images/task4/beforeFlip.png" width="400px"/><br>
-				<!-- <figcaption align="middle">nearest sampling, more color blocks</figcaption> -->
-				</td>
-				<td>
-				<img src="images/task4/afterFlip.png" width="400px"/><br>
-				<!-- <figcaption align="middle">bilinear sampling, smoother transition, looks better</figcaption> -->
-				</td>
-			</tr>
-		</table>
-
-		<p>
-			Diagram source: <a href="http://15462.courses.cs.cmu.edu/fall2015content/misc/HalfedgeEdgeOpImplementationGuide.pdf"> CMU CS 15-462: Guide To Implementing Edge Operations On A HalfEdge Data Stuctures</a>
-		</p>
-
-		<br>
-
-		<p>
-			Below are pictures of the teapot before and after some edge flips.
-		</p>
-
-		<table>
-			<tr>
-				<td>
-				<img src="images/task4/teapotB.png" width="400px"/><br>
-				<figcaption align="middle"> Before Edge Flip </figcaption>
-				</td>
-				<td>
-				<img src="images/task4/teapotA.png" width="400px"/><br>
-				<figcaption align="middle"> After some Edge Flips </figcaption>
-				</td>
-			</tr>
-		</table>
-
-		<br>
+</head>
 
 
-		<h3 align="middle">Part 5: Edge Split </h3>
+<body>
 
-		<p>
-			The implementation for edge split is similar to that of edge flip.
-			First, we check if the targeted edge is on the boundary. If it is, we do not split.
-			If it's not, we proceed to following steps. 
-			We first collect all elements (including halfedges, edges, vertices, and faces) using the left diagram below, just as in part 4. 
-			Elements are collected following the Half-Edge Data Structure. For example, to get h3, we call twin on h0; to get h1, we call next on h0; to get e0, we call edge on h0; and to get f0, we call face on h0.
-			Then, we reassign all elements according to the right diagram. 
-		
-		</p>
+<h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2018</h1>
+<h1 align="middle">Project 2: Mesh Edit</h1>
+<h2 align="middle">YOUR NAME</h2>
+
+<br><br>
+
+<div>
+
+<h2 align="middle">Overview</h2>
+<p>
+    YOUR RESPONSE GOES HERE
+</p>
+<br>
 
 
-		<table>
-			<tr>
-				<td>
-				<img src="images/task5/beforeSplit.jpeg" width="400px"/><br>
-				<figcaption align="middle"> Before Split </figcaption>
-				</td>
-				<td>
-				<img src="images/task5/afterSplit.jpeg" width="400px"/><br>
-				<figcaption align="middle"> After Split </figcaption>
-				</td>
-			</tr>
-		</table>
+<h2 align="middle">Section I: Bezier Curves and Surfaces</h2>
 
-		<br>
+<h3 align="middle">Part 1: Bezier Curves with 1D de Casteljau Subdivision</h3>
 
-		<p>
-			Below are pictures of the cow before and after some edge splits and edge flips.
-		</p>
 
-		<br>
+<b>
+  Briefly explain de Casteljau's algorithm and how you implemented it in order to evaluate Bezier curves.
+</b>
+<p>
+    de Casteljau's algorithm is a way to find a point that lies on the Bezier curve. Given a set of control points,
+	de Casteljau's algorithm can return the point that definitely lies on the Bezier curve defined by the control points. 
+	In this question, we only implemented one level of de Castelja's algorithm at a time. By taking every pair of two neigboring points
+	and linearly interpolate them, we got the next level of points. 
+</p>
+<br>
+<b>
+  Take a look at the provided .bzc files and create your own Bezier curve with 6 control points of your choosing. Use this Bezier curve for your screenshots below.
+</b>
+<!-- Example of including a single figure -->
+<div align="middle">
+  <img src="images/task1/level0.png" align="middle" width="50%">
+</div>
+<br>
 
-		<table>
+<b>
+  Show screenshots of each step / level of the evaluation from the original control points down to the final evaluated point. Press <kbd>E</kbd> to step through. Toggle <kbd>C</kbd> to show the completed Bezier curve as well.
+</b>
+<!-- Example of including multiple figures -->
+<div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+        <img src="images/task1/level1.png" align="middle" width="400px"/>
+        <figcaption>Level 0</figcaption>
+      </td>
+      <td>
+        <img src="images/task1/level2.png" align="middle" width="400px"/>
+        <figcaption>Level 1</figcaption>
+      </td>
+    </tr>
+    <br>
+    <tr align="center">
+      <td>
+        <img src="images/task1/level3.png" align="middle" width="400px"/>
+        <figcaption>Level 2</figcaption>
+      </td>
+      <td>
+        <img src="images/task1/level4.png" align="middle" width="400px"/>
+        <figcaption>Level 3</figcaption>
+      </td>
+    </tr>
+    <br>
+    <tr align="center">
+		<td>
+			<img src="images/task1/level5.png" align="middle" width="400px"/>
+			<figcaption>Level 4</figcaption>
+		  </td>
+    </tr>
+  </table>
+</div>
+<br>
 
-			<tr>
-				<td rowspan="2">
-				<img src="images/task5/beforeS.png" width="400px"/><br>
-				<figcaption align="middle"> Before Edge Split and Edge Flip </figcaption>
-				</td>
-				<td>
-				<img src="images/task5/AfterS.png" width="400px"/><br>
-				<figcaption align="middle"> After some Edge Splits </figcaption>
-			</tr>
 
-			<tr>
-				</td>
-				<td>
-				<img src="images/task5/AfterS&F.png" width="400px"/><br>
-				<figcaption align="middle"> After combination of Edge Splits and Edge Flips </figcaption>
-				</td>
-			</tr>
-		</table>
 
-		<br>
-		<br>
+  A slightly different Bezier curve by moving the original control points around and modifying the parameter \(t\) via mouse scrolling:
 
-		<h3 align="middle">Part 6: Loop Subdivision for Mesh Upsampling </h3>
-
-		<p>
+<p align="center">
+    <img src="images/task1/q1_gif.gif" align="middle" width="400px"/>
 			
-		</p>
-
-		<br>
-
+</p>  
+<br>
 
 
-		<p>Website Link: <a href="https://cal-cs184-student.github.io/project-webpages-sp23-qs/proj2/index.html">https://cal-cs184-student.github.io/project-webpages-sp23-qs/proj2/index.html</a></p>
-	</body>
+<h3 align="middle">Part 2: Bezier Surfaces with Separable 1D de Casteljau</h3>
+<b>
+  Briefly explain how de Casteljau algorithm extends to Bezier surfaces and how you implemented it in order to evaluate Bezier surfaces.
+</b>
+<p>
+    YOUR RESPONSE GOES HERE
+</p>
+<br>
+
+
+<b>
+  Show a screenshot of bez/teapot.bez (not .dae) evaluated by your implementation.
+</b>
+<p>
+    YOUR RESPONSE GOES HERE
+</p>
+<br>
+
+
+<h2 align="middle">Section II: Triangle Meshes and Half-Edge Data Structure</h2>
+
+<h3 align="middle">Part 3: Area-Weighted Vertex Normals</h3>
+
+<b>
+  Briefly explain how you implemented the area-weighted vertex normals.
+</b>
+<p>
+    YOUR RESPONSE GOES HERE
+</p>
+<br>
+
+
+<b>
+  Show screenshots of dae/teapot.dae (not .bez) comparing teapot shading with and without vertex normals. Use <kbd>Q</kbd> to toggle default flat shading and Phong shading.
+</b>
+<p>
+    YOUR RESPONSE GOES HERE
+</p>
+<br>
+
+
+<h3 align="middle">Part 4: Edge Flip</h3>
+<p>
+	For this part, our implementation followed several steps. 
+	First, we check if the targeted edge is on the boundary. If it is, we do nothing, since flipping an edge on the boundary doesn't make sense. 
+	If it's not, we proceed to edge flip. 
+	We first collect all elements (including halfedges, edges, vertices, and faces) using the left diagram below. 
+	Elements are collected following the Half-Edge Data Structure. For example, to get h3, we call twin on h0; to get h1, we call next on h0; to get e0, we call edge on h0; and to get f0, we call face on h0.
+	Then, we reassign all elements according to the right diagram. 
+
+</p>
+
+
+<table>
+	<tr>
+		<td>
+		<img src="images/task4/beforeFlip.png" width="400px"/><br>
+		<!-- <figcaption align="middle">nearest sampling, more color blocks</figcaption> -->
+		</td>
+		<td>
+		<img src="images/task4/afterFlip.png" width="400px"/><br>
+		<!-- <figcaption align="middle">bilinear sampling, smoother transition, looks better</figcaption> -->
+		</td>
+	</tr>
+</table>
+
+<p>
+	Diagram source: <a href="http://15462.courses.cs.cmu.edu/fall2015content/misc/HalfedgeEdgeOpImplementationGuide.pdf"> CMU CS 15-462: Guide To Implementing Edge Operations On A HalfEdge Data Stuctures</a>
+</p>
+
+<br>
+
+<p>
+	Below are pictures of the teapot before and after some edge flips.
+</p>
+
+<table>
+	<tr>
+		<td>
+		<img src="images/task4/teapotB.png" width="400px"/><br>
+		<figcaption align="middle"> Before Edge Flip </figcaption>
+		</td>
+		<td>
+		<img src="images/task4/teapotA.png" width="400px"/><br>
+		<figcaption align="middle"> After some Edge Flips </figcaption>
+		</td>
+	</tr>
+</table>
+
+<br>
+
+
+<h3 align="middle">Part 5: Edge Split</h3>
+<p>
+	The implementation for edge split is similar to that of edge flip.
+	First, we check if the targeted edge is on the boundary. If it is, we do not split.
+	If it's not, we proceed to following steps. 
+	We first collect all elements (including halfedges, edges, vertices, and faces) using the left diagram below, just as in part 4. 
+	Elements are collected following the Half-Edge Data Structure. For example, to get h3, we call twin on h0; to get h1, we call next on h0; to get e0, we call edge on h0; and to get f0, we call face on h0.
+	Then, we reassign all elements according to the right diagram. 
+
+</p>
+
+
+<table>
+	<tr>
+		<td>
+		<img src="images/task5/beforeSplit.jpeg" width="400px"/><br>
+		<figcaption align="middle"> Before Split </figcaption>
+		</td>
+		<td>
+		<img src="images/task5/afterSplit.jpeg" width="400px"/><br>
+		<figcaption align="middle"> After Split </figcaption>
+		</td>
+	</tr>
+</table>
+
+<br>
+
+<p>
+	Below are pictures of the cow before and after some edge splits and edge flips.
+</p>
+
+<br>
+
+<table>
+
+	<tr>
+		<td rowspan="2">
+		<img src="images/task5/beforeS.png" width="400px"/><br>
+		<figcaption align="middle"> Before Edge Split and Edge Flip </figcaption>
+		</td>
+		<td>
+		<img src="images/task5/AfterS.png" width="400px"/><br>
+		<figcaption align="middle"> After some Edge Splits </figcaption>
+	</tr>
+
+	<tr>
+		</td>
+		<td>
+		<img src="images/task5/AfterS&F.png" width="400px"/><br>
+		<figcaption align="middle"> After combination of Edge Splits and Edge Flips </figcaption>
+		</td>
+	</tr>
+</table>
+
+<br>
+<br>
+
+
+<h3 align="middle">Part 6: Loop Subdivision for Mesh Upsampling</h3>
+<b>
+  Briefly explain how you implemented the loop subdivision and describe any interesting implementation / debugging tricks you have used.
+</b>
+<p>
+    YOUR RESPONSE GOES HERE
+</p>
+<br>
+
+
+<b>
+  Take some notes, as well as some screenshots, of your observations on how meshes behave after loop subdivision. What happens to sharp corners and edges? Can you reduce this effect by pre-splitting some edges?
+</b>
+<p>
+    YOUR RESPONSE GOES HERE
+</p>
+<br>
+
+
+<b>
+  Load dae/cube.dae. Perform several iterations of loop subdivision on the cube. Notice that the cube becomes slightly asymmetric after repeated subdivisions. Can you pre-process the cube with edge flips and splits so that the cube subdivides symmetrically? Document these effects and explain why they occur. Also explain how your pre-processing helps alleviate the effects.
+</b>
+<p>
+    YOUR RESPONSE GOES HERE
+</p>
+<br>
+
+
+<b>
+    If you have implemented any extra credit extensions, explain what you did and document how they work with screenshots.
+</b>
+<p>
+    YOUR RESPONSE GOES HERE
+</p>
+<br>
+
+
+<h3 align="middle">Part 7 (Optional, Possible Extra Credit)</h3>
+<b>
+    Save your best polygon mesh as partsevenmodel.dae in your docs folder and show us a screenshot of the mesh in your write-up.
+</b>
+<p>
+    YOUR RESPONSE GOES HERE
+</p>
+<br>
+
+
+<b>
+    Include a series of screenshots showing your original mesh and your mesh after one and two rounds of subdivision. If you have used custom shaders, include screenshots of your mesh with those shaders applied as well.
+</b>
+<p>
+    YOUR RESPONSE GOES HERE
+</p>
+<br>
+
+
+<b>
+    Describe what you have done to enhance your mesh beyond the simple humanoid mesh described in the tutorial.
+</b>
+<p>
+    YOUR RESPONSE GOES HERE
+</p>
+<br>
+<p>Website Link: <a href="https://cal-cs184-student.github.io/project-webpages-sp23-qs/proj2/index.html">https://cal-cs184-student.github.io/project-webpages-sp23-qs/proj2/index.html</a></p>
+
+
+</body>
 </html>
