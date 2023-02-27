@@ -1,8 +1,149 @@
 <html>
 	<head>
+		<style>
+			body {
+				padding: 100px;
+				width: 1000px;
+				margin: auto;
+				text-align: left;
+				font-weight: 300;
+				font-family: 'Open Sans', sans-serif;
+				color: #121212;
+			}
+			h1, h2, h3, h4 {
+				font-family: 'Source Sans Pro', sans-serif;
+			}
+		</style>
+		<title>CS 184 MeshEdit</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+	
+		<link rel="stylesheet" href="style.css">
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
 	</head>
 	<body>
 		Project 2 here
+
+		<h3 align="middle">Part 4: Edge Flip </h3>
+
+		<p>
+			For this part, our implementation followed several steps. 
+			First, we check if the targeted edge is on the boundary. If it is, we do nothing, since flipping an edge on the boundary doesn't make sense. 
+			If it's not, we proceed to edge flip. 
+			We first collect all elements (including halfedges, edges, vertices, and faces) using the left diagram below. 
+			Elements are collected following the Half-Edge Data Structure. For example, to get h3, we call twin on h0; to get h1, we call next on h0; to get e0, we call edge on h0; and to get f0, we call face on h0.
+			Then, we reassign all elements according to the right diagram. 
+		
+		</p>
+
+
+		<table>
+			<tr>
+				<td>
+				<img src="images/task4/beforeFlip.png" width="400px"/><br>
+				<!-- <figcaption align="middle">nearest sampling, more color blocks</figcaption> -->
+				</td>
+				<td>
+				<img src="images/task4/afterFlip.png" width="400px"/><br>
+				<!-- <figcaption align="middle">bilinear sampling, smoother transition, looks better</figcaption> -->
+				</td>
+			</tr>
+		</table>
+
+		<p>
+			Diagram source: <a href="http://15462.courses.cs.cmu.edu/fall2015content/misc/HalfedgeEdgeOpImplementationGuide.pdf"> CMU CS 15-462: Guide To Implementing Edge Operations On A HalfEdge Data Stuctures</a>
+		</p>
+
+		<br>
+
+		<p>
+			Below are pictures of the teapot before and after some edge flips.
+		</p>
+
+		<table>
+			<tr>
+				<td>
+				<img src="images/task4/teapotB.png" width="400px"/><br>
+				<figcaption align="middle"> Before Edge Flip </figcaption>
+				</td>
+				<td>
+				<img src="images/task4/teapotA.png" width="400px"/><br>
+				<figcaption align="middle"> After some Edge Flips </figcaption>
+				</td>
+			</tr>
+		</table>
+
+		<br>
+
+
+		<h3 align="middle">Part 5: Edge Split </h3>
+
+		<p>
+			The implementation for edge split is similar to that of edge flip.
+			First, we check if the targeted edge is on the boundary. If it is, we do not split.
+			If it's not, we proceed to following steps. 
+			We first collect all elements (including halfedges, edges, vertices, and faces) using the left diagram below, just as in part 4. 
+			Elements are collected following the Half-Edge Data Structure. For example, to get h3, we call twin on h0; to get h1, we call next on h0; to get e0, we call edge on h0; and to get f0, we call face on h0.
+			Then, we reassign all elements according to the right diagram. 
+		
+		</p>
+
+
+		<table>
+			<tr>
+				<td>
+				<img src="images/task5/beforeSplit.jpeg" width="400px"/><br>
+				<figcaption align="middle"> Before Split </figcaption>
+				</td>
+				<td>
+				<img src="images/task5/afterSplit.jpeg" width="400px"/><br>
+				<figcaption align="middle"> After Split </figcaption>
+				</td>
+			</tr>
+		</table>
+
+		<br>
+
+		<p>
+			Below are pictures of the cow before and after some edge splits and edge flips.
+		</p>
+
+		<br>
+
+		<table>
+
+			<tr>
+				<td rowspan="2">
+				<img src="images/task5/beforeS.png" width="400px"/><br>
+				<figcaption align="middle"> Before Edge Split and Edge Flip </figcaption>
+				</td>
+				<td>
+				<img src="images/task5/AfterS.png" width="400px"/><br>
+				<figcaption align="middle"> After some Edge Splits </figcaption>
+			</tr>
+
+			<tr>
+				</td>
+				<td>
+				<img src="images/task5/AfterS&F.png" width="400px"/><br>
+				<figcaption align="middle"> After combination of Edge Splits and Edge Flips </figcaption>
+				</td>
+			</tr>
+		</table>
+
+		<br>
+		<br>
+
+		<h3 align="middle">Part 6: Loop Subdivision for Mesh Upsampling </h3>
+
+		<p>
+			
+		</p>
+
+		<br>
+
+
+
 		<p>Website Link: <a href="https://cal-cs184-student.github.io/project-webpages-sp23-qs/proj2/index.html">https://cal-cs184-student.github.io/project-webpages-sp23-qs/proj2/index.html</a></p>
 	</body>
 </html>
