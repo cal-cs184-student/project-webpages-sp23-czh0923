@@ -1,38 +1,40 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<style>
-  body {
-    background-color: white;
-    padding: 100px;
-    width: 1000px;
-    margin: auto;
-    text-align: left;
-    font-weight: 300;
-    font-family: 'Open Sans', sans-serif;
-    color: #121212;
-  }
-  h1, h2, h3, h4 {
-    font-family: 'Source Sans Pro', sans-serif;
-  }
-  kbd {
-    color: #121212;
-  }
-</style>
-<title>CS 184 Mesh Edit</title>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+	<style>
+		body {
+			background-color: white;
+			padding: 100px;
+			width: 1000px;
+			margin: auto;
+			text-align: left;
+			font-weight: 300;
+			font-family: 'Open Sans', sans-serif;
+			color: #121212;
+		}
+		h1, h2, h3, h4 {
+			font-family: 'Source Sans Pro', sans-serif;
+		}
+		kbd {
+			color: #121212;
+		}
+	</style>
+	<title>CS 184 Mesh Edit</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
 
-<script>
-  MathJax = {
-    tex: {
-      inlineMath: [['$', '$'], ['\\(', '\\)']]
-    }
-  };
-</script>
-<script id="MathJax-script" async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
-</script>
+	<script>
+	MathJax = {
+		tex: {
+		inlineMath: [['$', '$'], ['\\(', '\\)']]
+		}
+	};
+	</script>
+	<script id="MathJax-script" async
+	src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+	</script>
+
+	<link rel="stylesheet" href="style.css">
 
 </head>
 
@@ -282,7 +284,16 @@
   Briefly explain how you implemented the loop subdivision and describe any interesting implementation / debugging tricks you have used.
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+    To acheive upsampling, we implemented loop subdivision according to the following steps. 
+	First, we calculate the new position for all old vertices in the edge. 
+	We also calculate new position for new vertices. Since new vertices are not yet created, we store this value temporarily in new vertices' corresponding edges.
+	New position for vertices will allow the mesh to be smoother when we upsample, dividing triangles into smaller triangles.
+
+	Next, we split all original edges in the mesh. 
+	We also mark complete new (excluding those that are seperated from previous edges) edges and new vertices; this property is used in the next step.
+
+	Then, we flip all new edges that connects a new vertex and an old vertex.
+
 </p>
 <br>
 
