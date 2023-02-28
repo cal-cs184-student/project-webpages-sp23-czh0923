@@ -276,83 +276,245 @@
 </table>
 
 <br>
+
+
+<p> 
+	We have also modified our above implementation to support splitting edges on the boundary. 
+	Below are diagrams showing how boundary edges are split in <code>dae/beetle.dae</code>.
+</p>
+
+<table>
+	<tr>
+		<td>
+		<img src="images/task5/edgeB.png" width="400px"/><br>
+		<figcaption align="middle"> Boundary Edge Before Split </figcaption>
+		</td>
+		<td>
+		<img src="images/task5/edgeA.png" width="400px"/><br>
+		<figcaption align="middle"> Boundary Edge After Split </figcaption>
+		</td>
+	</tr>
+</table>
+
+<br>
 <br>
 
 
 <h3 align="middle">Part 6: Loop Subdivision for Mesh Upsampling</h3>
-<b>
+<!-- <b>
   Briefly explain how you implemented the loop subdivision and describe any interesting implementation / debugging tricks you have used.
-</b>
+</b> -->
 <p>
     To acheive upsampling, we implemented loop subdivision according to the following steps. 
 	First, we calculate the new position for all old vertices in the edge. 
 	We also calculate new position for new vertices. Since new vertices are not yet created, we store this value temporarily in new vertices' corresponding edges.
-	New position for vertices will allow the mesh to be smoother when we upsample, dividing triangles into smaller triangles.
+	New position for vertices will allow the mesh to be smoother when we upsample, dividing triangles into smaller triangles. 
+	They are calculated as the weighted sum of surrounding vertices. How surrouding vertices weight are determined using the below formula.
+</p>
+
+<div align="middle">
+	<img src="images/task6/weights.png" align="middle" width="80%">
+ </div>
+
+
+<p>
 
 	Next, we split all original edges in the mesh. 
 	We also mark complete new (excluding those that are seperated from previous edges) edges and new vertices; this property is used in the next step.
 
 	Then, we flip all new edges that connects a new vertex and an old vertex.
 
+	This process is shown below.
+
 </p>
-<br>
+
+<div align="middle">
+	<img src="images/task6/process.png" align="middle" width="80%">
+</div>
+
+ <p>
+	During our implementation, the process is often stucked in a infinite loop. A debugging trick we used is to print when each step is done. 
+	In this way, we are able to better target what caused infinite loops.
+
+ </p>
 
 
+<!-- 
 <b>
-  Take some notes, as well as some screenshots, of your observations on how meshes behave after loop subdivision. What happens to sharp corners and edges? Can you reduce this effect by pre-splitting some edges?
-</b>
+  Take some notes, as well as some screenshots, of your observations on how meshes behave after loop subdivision. 
+  What happens to sharp corners and edges? Can you reduce this effect by pre-splitting some edges?
+</b> -->
+
+
+<br>
+
+<div align="middle">
+	<img src="images/task6/t0.png" align="middle" width="400px">
+	<figcaption align="middle"> Level 0 </figcaption>
+ </div>
+
+ <br>
+
+<table>
+	<tr>
+		<td>
+		<img src="images/task6/t1.png" width="400px"/><br>
+		<figcaption align="middle"> Level 1 </figcaption>
+		</td>
+		<td>
+		<img src="images/task6/t2.png" width="400px"/><br>
+		<figcaption align="middle"> Level 2 </figcaption>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="images/task6/t3.png" width="400px"/><br>
+		<figcaption align="middle"> Level 3</figcaption>
+		</td>
+		<td>
+		<img src="images/task6/t4.png" width="400px"/><br>
+		<figcaption align="middle"> Level 4 </figcaption>
+		</td>
+	</tr>
+</table>
+
+<br>
+
 <p>
-    YOUR RESPONSE GOES HERE
+	Above, the torus is upsampled. We can observe that sharp corners and edges are smoothed out. 
+	At level 3, the torus is the shape of a ring, and sharp corners and edges are mostly removed.
+	This is because we update the positions of vertices to be weighted sum of surrounding vertices.
+	
+	<br>
+	<br>
+
+	If we pre-split some edges, the smoothen effect is reduced. We show this effect in the diagrams below. 
+	We only pre-splitted the left half of the torus to make contrast between pre-split and non-pre-split more visible. 
+	We can observe that more characteristics of the orignial mesh are preserved with pre-splitted edges. 
 </p>
 <br>
 
+<div align="middle">
+	<img src="images/task6/preS0.png" align="middle" width="400px">
+	<figcaption align="middle"> Level 0 with Pre-Split</figcaption>
+ </div>
 
-<b>
-  Load dae/cube.dae. Perform several iterations of loop subdivision on the cube. Notice that the cube becomes slightly asymmetric after repeated subdivisions. Can you pre-process the cube with edge flips and splits so that the cube subdivides symmetrically? Document these effects and explain why they occur. Also explain how your pre-processing helps alleviate the effects.
-</b>
+ <br>
+
+
+<table>
+	<tr>
+		<td>
+		<img src="images/task6/preS1.png" width="400px"/><br>
+		<figcaption align="middle"> Level 1 with Pre-Split </figcaption>
+		</td>
+		<td>
+		<img src="images/task6/preS2.png" width="400px"/><br>
+		<figcaption align="middle"> Level 2 with Pre-Split </figcaption>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="images/task6/preS3.png" width="400px"/><br>
+		<figcaption align="middle"> Level 3 with Pre-Split </figcaption>
+		</td>
+		<td>
+		<img src="images/task6/preS4.png" width="400px"/><br>
+		<figcaption align="middle"> Level 4 with Pre-Split </figcaption>
+		</td>
+	</tr>
+</table>
+
+
+<!-- <b>
+  Load dae/cube.dae. Perform several iterations of loop subdivision on the cube. Notice that the cube becomes slightly asymmetric after repeated subdivisions. 
+  Can you pre-process the cube with edge flips and splits so that the cube subdivides symmetrically? 
+  Document these effects and explain why they occur. Also explain how your pre-processing helps alleviate the effects.
+</b> -->
+
+<br>
+<br>
 <p>
-    YOUR RESPONSE GOES HERE
+    Below are diagrams of performing four iterations of loop subdivison on the <code>dae/cube.dae</code>.
 </p>
+
+<div align="middle">
+	<img src="images/task6/c0.png" align="middle" width="400px">
+	<figcaption align="middle"> Level 0 </figcaption>
+ </div>
+
+ <br>
+
+
+<table>
+	<tr>
+		<td>
+		<img src="images/task6/c1.png" width="400px"/><br>
+		<figcaption align="middle"> Level 1 </figcaption>
+		</td>
+		<td>
+		<img src="images/task6/c2.png" width="400px"/><br>
+		<figcaption align="middle"> Level 2 </figcaption>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="images/task6/c3.png" width="400px"/><br>
+		<figcaption align="middle"> Level 3</figcaption>
+		</td>
+		<td>
+		<img src="images/task6/c4.png" width="400px"/><br>
+		<figcaption align="middle"> Level 4 </figcaption>
+		</td>
+	</tr>
+</table>
+
 <br>
 
-
-<b>
-    If you have implemented any extra credit extensions, explain what you did and document how they work with screenshots.
-</b>
 <p>
-    YOUR RESPONSE GOES HERE
+	The upsampled mesh is asymmetric because the original mesh have asymmetric edges. 
+	We could pre-split the diagnal edge on each face to make the original mesh symmetric. Then, our upsampled mesh will also be symmetric.
 </p>
+
 <br>
 
+<div align="middle">
+	<img src="images/task6/s0.png" align="middle" width="400px">
+	<figcaption align="middle"> Level 0 with Pre-Split </figcaption>
+ </div>
 
-<h3 align="middle">Part 7 (Optional, Possible Extra Credit)</h3>
-<b>
-    Save your best polygon mesh as partsevenmodel.dae in your docs folder and show us a screenshot of the mesh in your write-up.
-</b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
+ <br>
+
+
+<table>
+	<tr>
+		<td>
+		<img src="images/task6/s1.png" width="400px"/><br>
+		<figcaption align="middle"> Level 1 with Pre-Split</figcaption>
+		</td>
+		<td>
+		<img src="images/task6/s2.png" width="400px"/><br>
+		<figcaption align="middle"> Level 2 with Pre-Split</figcaption>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="images/task6/s3.png" width="400px"/><br>
+		<figcaption align="middle"> Level 3 with Pre-Split</figcaption>
+		</td>
+		<td>
+		<img src="images/task6/s4.png" width="400px"/><br>
+		<figcaption align="middle"> Level 4 with Pre-Split</figcaption>
+		</td>
+	</tr>
+</table>
+
+
+<br>
+<br>
 <br>
 
-
-<b>
-    Include a series of screenshots showing your original mesh and your mesh after one and two rounds of subdivision. If you have used custom shaders, include screenshots of your mesh with those shaders applied as well.
-</b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
-<br>
-
-
-<b>
-    Describe what you have done to enhance your mesh beyond the simple humanoid mesh described in the tutorial.
-</b>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
-<br>
 <p>Website Link: <a href="https://cal-cs184-student.github.io/project-webpages-sp23-qs/proj2/index.html">https://cal-cs184-student.github.io/project-webpages-sp23-qs/proj2/index.html</a></p>
-
 
 </body>
 </html>
