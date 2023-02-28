@@ -38,12 +38,11 @@
 
 </head>
 
-
 <body>
 
 <h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2018</h1>
 <h1 align="middle">Project 2: Mesh Edit</h1>
-<h2 align="middle">YOUR NAME</h2>
+<h2 align="middle">Zhihan Cheng, Yuerou Tang</h2>
 
 <br><br>
 
@@ -51,7 +50,9 @@
 
 <h2 align="middle">Overview</h2>
 <p>
-    YOUR RESPONSE GOES HERE
+    In this project, we first implemented de Casteljau's algorithm for Bezier curves and surfaces. Then we moved on to manipulating mesh elements, such as half
+    edges, vertices, and faces. Mesh is an easier way to render surfaces. Remeshing operations such as flipping and splitting edges
+    allow us to manipulate the shading and simualtions of objects. 
 </p>
 <br>
 
@@ -61,9 +62,6 @@
 <h3 align="middle">Part 1: Bezier Curves with 1D de Casteljau Subdivision</h3>
 
 
-<b>
-  Briefly explain de Casteljau's algorithm and how you implemented it in order to evaluate Bezier curves.
-</b>
 <p>
     de Casteljau's algorithm is a way to find a point that lies on the Bezier curve. Given a set of control points,
 	de Casteljau's algorithm can return the point that definitely lies on the Bezier curve defined by the control points. 
@@ -71,18 +69,14 @@
 	and linearly interpolate them, we got the next level of points. 
 </p>
 <br>
-<b>
-  Take a look at the provided .bzc files and create your own Bezier curve with 6 control points of your choosing. Use this Bezier curve for your screenshots below.
-</b>
+
 <!-- Example of including a single figure -->
 <div align="middle">
   <img src="images/task1/level0.png" align="middle" width="50%">
 </div>
 <br>
 
-<b>
-  Show screenshots of each step / level of the evaluation from the original control points down to the final evaluated point. Press <kbd>E</kbd> to step through. Toggle <kbd>C</kbd> to show the completed Bezier curve as well.
-</b>
+
 <!-- Example of including multiple figures -->
 <div align="middle">
   <table style="width:100%">
@@ -130,9 +124,7 @@
 
 
 <h3 align="middle">Part 2: Bezier Surfaces with Separable 1D de Casteljau</h3>
-<b>
-  Briefly explain how de Casteljau algorithm extends to Bezier surfaces and how you implemented it in order to evaluate Bezier surfaces.
-</b>
+
 <p>
     For a Bezier surface, we think of it as a grid of control points. For each row of control points, we apply the 1D de Casteljau that we implemented in
     part 1 to get a single point from each row. Then with a point from each row, we apply the 1D de Casteljau algorithm again to finally get a single point that
@@ -140,10 +132,6 @@
 </p>
 <br>
 
-
-<b>
-  Show a screenshot of bez/teapot.bez (not .dae) evaluated by your implementation.
-</b>
 <p>
   <p align="center">
     <img src="images/task2/task2.png" align="middle" width="400px"/>
@@ -157,9 +145,7 @@
 
 <h3 align="middle">Part 3: Area-Weighted Vertex Normals</h3>
 
-<b>
-  Briefly explain how you implemented the area-weighted vertex normals.
-</b>
+
 <p>
     We first get one of the half edges associated with vertex, then iterate through the half edges from the first half edge to get the associated
     faces of the mesh. For each of faces with vertices \(A, B, C\), we first compute the area by \(\frac{1}{2}\lvert AB \times AC\rvert\), then get the 
@@ -170,9 +156,7 @@
 <br>
 
 
-<b>
-  Show screenshots of dae/teapot.dae (not .bez) comparing teapot shading with and without vertex normals. Use <kbd>Q</kbd> to toggle default flat shading and Phong shading.
-</b>
+
 <p>
   <table>
     <tr>
