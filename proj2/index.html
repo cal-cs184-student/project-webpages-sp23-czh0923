@@ -134,7 +134,9 @@
   Briefly explain how de Casteljau algorithm extends to Bezier surfaces and how you implemented it in order to evaluate Bezier surfaces.
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+    For a Bezier surface, we think of it as a grid of control points. For each row of control points, we apply the 1D de Casteljau that we implemented in
+    part 1 to get a single point from each row. Then with a point from each row, we apply the 1D de Casteljau algorithm again to finally get a single point that
+    lies on the Bezier surface. 
 </p>
 <br>
 
@@ -143,7 +145,10 @@
   Show a screenshot of bez/teapot.bez (not .dae) evaluated by your implementation.
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+  <p align="center">
+    <img src="images/task2/task2.png" align="middle" width="400px"/>
+			
+</p> 
 </p>
 <br>
 
@@ -156,7 +161,11 @@
   Briefly explain how you implemented the area-weighted vertex normals.
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+    We first get one of the half edges associated with vertex, then iterate through the half edges from the first half edge to get the associated
+    faces of the mesh. For each of faces with vertices \(A, B, C\), we first compute the area by \(\frac{1}{2}\lvert AB \times AC\rvert\), then get the 
+    normal vector of the face at the designated vertex \(A\) by normalizing the cross product of \(AB \times AC\). Then we weigh each face
+    normal vector by the area of the face, and compute the weighted sum of all the face normal vectors. Finally, we get the final
+    normalized vector of the vertex by normalizing the weighted sum vector. 
 </p>
 <br>
 
@@ -165,7 +174,18 @@
   Show screenshots of dae/teapot.dae (not .bez) comparing teapot shading with and without vertex normals. Use <kbd>Q</kbd> to toggle default flat shading and Phong shading.
 </b>
 <p>
-    YOUR RESPONSE GOES HERE
+  <table>
+    <tr>
+      <td>
+      <img src="images/task3/unsmoothed.png" width="400px"/><br>
+      <!-- <figcaption align="middle">nearest sampling, more color blocks</figcaption> -->
+      </td>
+      <td>
+      <img src="images/task3/smoothed.png" width="400px"/><br>
+      <!-- <figcaption align="middle">bilinear sampling, smoother transition, looks better</figcaption> -->
+      </td>
+    </tr>
+  </table>
 </p>
 <br>
 
@@ -217,6 +237,13 @@
 		</td>
 	</tr>
 </table>
+<p>
+  Debugging: I accidentally wrote <code>h9->setNeighbors(h6->next(), h4, a, ac, h9->face());</code> instead of <code>h9->setNeighbors(h9->next(), h4, a, ac, h9->face());</code> when re defining half edges.
+This was a very subtle mistake because h9 was not one of the half edges that we need to change to flip the edge. I spent ~2 hours checking my variable assignment for the edges that were changed
+but the flip was not rendering (it didn't break or error, the renderer just freezes when I flip an edge). I finally figured it out by starring at my code long enough. 
+</p>
+
+
 
 <br>
 
@@ -274,6 +301,10 @@
 		</td>
 	</tr>
 </table>
+<p>
+  Debugging: Debugging for this part was fine because I reused some code from previous parts. 
+</p>
+
 
 <br>
 <br>
