@@ -20,6 +20,38 @@
   kbd {
     color: #121212;
   }
+
+
+  #comparisonTable th {
+  background-color: rgb(197, 215, 249);
+  }
+
+/* 
+  #comparisonTable table, td, th {  
+    border: 1px solid #ddd;
+    text-align: left;
+  } */
+
+  #comparisonTable table {
+    border: 1px solid #ddd;
+    text-align: left;
+
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  #comparisonTable th {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 15px;
+  } 
+
+  #comparisonTable td {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 15px;
+  } 
+
 </style>
 <title>CS 184 Path Tracer</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -106,12 +138,13 @@ Show images with normal shading for a few small .dae files. -->
 </h3>
 <p>
 
-    To test intersection with triangle, we solve for time t when ray intersects with the plane in which the triangle lies. The intersection is only valid when the following two conditions is met. <br>
-    1. Time t for point of intersection must be greater than 0. <br>
-    2. Point of intersection must be within the triangle itself. We use barycentric coordinates to test this. If $(\alpha, \beta, \gamma)$ are all within 0 to 1, the intersection is valid. <br>
-    
-    <br>
+    To test intersection with triangle, we solve for time t when ray intersects with the plane in which the triangle lies. The intersection is only valid when the following two conditions is met: 
 
+    <ol>
+      <li>Time t for point of intersection must be greater than 0.</li>
+      <li>Point of intersection must be within the triangle itself. We use barycentric coordinates to test this. If $(\alpha, \beta, \gamma)$ are all within 0 to 1, the intersection is valid. </li>
+    </ol>
+    
     We used the Möller-Trumbore Algorithm. This algorithm solves the function: $\vec{O} + t\vec{D} = (1 - b1 - b2)\vec{P_0} + b1\vec{P_1} + b2\vec{P_2}$. 
     It is an optimized way to test for whether the intersection is within the triangle without first calculating the plane eqution. 
 
@@ -124,16 +157,19 @@ Show images with normal shading for a few small .dae files. -->
 </h3>
 <p>
   
-    To test intersection with spheres, we solve for time t when ray intersects the sphere. We solve the quadratic function, and there're three possible outcomes. <br>
-    1. There's no solution. This means that the ray does not intersect with the sphere. <br>
-    2. There's one solution. This means that the ray is tangent to the sphere. <br>
-    3. There're two solutions. If both t are greater than 0, we have two intersections with the sphere. <br>
+    To test intersection with spheres, we solve for time t when ray intersects the sphere. We solve the quadratic function, and there're three possible outcomes: 
+
+    <ol>
+      <li>There's no solution. This means that the ray does not intersect with the sphere.</li>
+      <li>There's one solution. This means that the ray is tangent to the sphere.</li>
+      <li>There're two solutions. If both t are greater than 0, we have two intersections with the sphere.</li>
+    </ol>
 
 </p>
 <br>
 
 <h3>
-  Show images with normal shading for a few small .dae files.
+  Images with normal shading for a few small .dae files.
 </h3>
 <!-- Example of including multiple figures -->
 <div align="middle">
@@ -161,6 +197,7 @@ Show images with normal shading for a few small .dae files. -->
   </table>
 </div>
 <br>
+<br>
 
 
 <h2 align="middle">Part 2: Bounding Volume Hierarchy (20 Points)</h2>
@@ -169,7 +206,7 @@ Show images with normal shading for a few large .dae files that you can only ren
 Compare rendering times on a few scenes with moderately complex geometries with and without BVH acceleration. Present your results in a one-paragraph analysis. -->
 
 <h3>
-  Walk through your BVH construction algorithm. Explain the heuristic you chose for picking the splitting point.
+  BVH construction algorithm & heuristic for picking the splitting point.
 </h3>
 <p>
     We build our BVH resursively. 
@@ -186,31 +223,21 @@ Compare rendering times on a few scenes with moderately complex geometries with 
     A leaf BVHNode will store all primitives it contains, 
     while a non-leaf node stores left and right pointer to the BVHNode built on its left and right primitive groups.
 </p>
-
+<br>
 <h3>
-  Show images with normal shading for a few large .dae files that you can only render with BVH acceleration.
+  Normal shading for large .dae files that can only be rendered with BVH acceleration.
 </h3>
 <!-- Example of including multiple figures -->
 <div align="middle">
   <table style="width:100%">
     <tr align="center">
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example1.dae</figcaption>
+        <img src="images/part2/maxplanck.png" align="middle" width="400px"/>
+        <figcaption>maxplanck.dae</figcaption>
       </td>
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example2.dae</figcaption>
-      </td>
-    </tr>
-    <tr align="center">
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example3.dae</figcaption>
-      </td>
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example4.dae</figcaption>
+        <img src="images/part2/CBlucy.png" align="middle" width="400px"/>
+        <figcaption>CBLucy.dae</figcaption>
       </td>
     </tr>
   </table>
@@ -218,11 +245,46 @@ Compare rendering times on a few scenes with moderately complex geometries with 
 <br>
 
 <h3>
-  Compare rendering times on a few scenes with moderately complex geometries with and without BVH acceleration. Present your results in a one-paragraph analysis.
+  Comparison of rendering times on scenes with moderately complex geometries with and without BVH acceleration. 
 </h3>
+
+<div id="comparisonTable">
+  <table>
+    <tr>
+      <th>Scene</th>
+      <th>Without BVH</th>
+      <th>With BVH</th>
+    </tr>
+    <tr>
+      <td>Cow</td>
+      <td>25.2083s</td>
+      <td>0.1387s</td>
+    </tr>
+    <tr>
+      <td>MaxPlanck</td>
+      <td>219.0163s</td>
+      <td>0.1730s</td>
+    </tr>
+    <tr>
+      <td>CBLucy</td>
+      <td>1330.6861s</td>
+      <td>0.2100s</td>
+    </tr>
+  
+  </table>
+  
+</div>
+
+<br>
+
 <p>
-    YOUR RESPONSE GOES HERE
+  As we can see, when rendering moderately complex scenes, using BVH acceleration can significantly reduce rendering times. 
+  Without BVH acceleration, the render would need to test each primitive in the scene individually, leading to much longer rendering times. 
+  With BVH acceleration, the hierarchy allows the render to more quickly determine which objects the ray could potentially intesect, reducing the number of tests needed and resulting in faster rendering times. 
+
+  The speed up is most significant in scenes with higher complexity.
 </p>
+
 <br>
 
 <h2 align="middle">Part 3: Direct Illumination (20 Points)</h2>
