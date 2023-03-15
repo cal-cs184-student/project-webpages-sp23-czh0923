@@ -53,7 +53,7 @@
 
 <div align="center">
 
-  <img src="images/part4/bunny/CBbunny_1024_1_3.png" width="480px" />
+  <img src="images/ultimateBunny.png" width="480px" />
   <figcaption align="middle">my bunny is the bounciest bunny</figcaption>
 </div>
 
@@ -172,7 +172,19 @@ Compare rendering times on a few scenes with moderately complex geometries with 
   Walk through your BVH construction algorithm. Explain the heuristic you chose for picking the splitting point.
 </h3>
 <p>
-    YOUR RESPONSE GOES HERE
+    We build our BVH resursively. 
+    Our algorithm partitions the primitives into two groups 
+    and recursively applies the algorithm to each group until the number of primitives left is smaller than maximum_leaf_size. 
+
+    We always choose the split primitives along the axis with the largest range difference. 
+    In this way, we will most effeciently decrease the range of the bounding box for the BVHNode in next level. 
+
+    The group that each primitives belong to is determined by comparing each primitive's centroid to the mean centroid of all primitives.
+    If the primitive centroid is smaller than the mean centroid, the primitive belongs to the left group, otherwise, it belongs to the right.
+
+    In each recursive call, we build a BVHNode. 
+    A leaf BVHNode will store all primitives it contains, 
+    while a non-leaf node stores left and right pointer to the BVHNode built on its left and right primitive groups.
 </p>
 
 <h3>
