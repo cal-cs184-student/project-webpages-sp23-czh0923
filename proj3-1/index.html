@@ -419,7 +419,19 @@ You will probably want to use the instructional machines for the above renders i
   Walk through your implementation of the indirect lighting function.
 </h3>
 <p>
-    YOUR RESPONSE GOES HERE
+    We implemented the <code>PathTracer::at_least_one_bounce_radiance</code> function to achieve global illumination with ray bouncing multiple times in the scene. 
+    We first account for cases where max_ray_depth is 0 or 1 in the <code>PathTracer::est_radiance_global_illumination</code> function. 
+    Then, inside <code>PathTracer::at_least_one_bounce_radiance</code> function, we first calculate the once_bounce_radiance at the hit point, and sample a direction and its corresponding next intersection point with 
+    <code>DiffuseBSDF::sample_f</code>.
+    The next intersection is where light would bounce to, or come from, since in ray tracing, we are doing it backwards. 
+    And then we check for conditions to continue the recursion:
+    <ol>
+      <li> max_ray_depth must be greater than 1.</li>
+      <li> Russian Roulette has not terminated the bounce. Russian Roulette is done with coin_flip function with probabily 0.3 to prevent infinite recursion. </li>
+    </ol>
+
+    If both conditions are met, we call <code>PathTracer::at_least_one_bounce_radiance</code> function recursively on the newly initiated ray and next intersection point 
+    and use the reflection function to add the next bounce radiance to current radiance.
 </p>
 <br>
 
