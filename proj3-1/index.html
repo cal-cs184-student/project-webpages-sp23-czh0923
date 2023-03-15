@@ -11,6 +11,8 @@
     font-weight: 300;
     font-family: 'Open Sans', sans-serif;
     color: #121212;
+
+    letter-spacing: 1px;
   }
   h1, h2, h3, h4 {
     font-family: 'Source Sans Pro', sans-serif;
@@ -50,14 +52,12 @@
 
 
 <div align="center">
-  <table style="width=100%">
-      <tr>
-          <td align="middle">
-          <img src="images/example_image.png" width="480px" />
-          <figcaption align="middle">Results Caption: my bunny is the bounciest bunny</figcaption>
-      </tr>
-  </table>
+
+  <img src="images/part4/bunny/CBbunny_1024_1_3.png" width="480px" />
+  <figcaption align="middle">my bunny is the bounciest bunny</figcaption>
 </div>
+
+<br>
 
 
 <h2 align="middle">Overview</h2>
@@ -72,18 +72,63 @@ Explain the triangle intersection algorithm you implemented in your own words.
 Show images with normal shading for a few small .dae files. -->
 
 <h3>
-  Walk through the ray generation and primitive intersection parts of the rendering pipeline.
+  Ray Generation
 </h3>
 <p>
-    YOUR RESPONSE GOES HERE
+  The <code>Camera::generate_ray(...)</code> function takes in (x, y) in image coordinates and output a ray with origin and direction in the world space. 
+    
+  To do this, we first compute a i2c matrix that transfer a homogenous 2D coordinates in image space to a homogenous 2D coordinates in the camera space.
+  The i2c matrix is defined so that bottom left corner, $(0, 0)$, transfers to $(-tan(\frac{hFov}{2}), -tan(\frac{vFov}{2})) $, 
+  and the upper right corner, $(1, 1)$, transfers to $(tan(\frac{hFov}{2}), tan(\frac{vFov}{2})) $.
+  Since in the camera space, the z coordinates is always -1, we set the z axis of our point to -1, after applying i2c, transforming it into camera space.
+  <br>
+  We then generate the ray with the camera position in the world space as origin 
+  and with direction pointing from $(0, 0, 0)$ to our point in camera space normalized and transformed into the world space.
+  <br>
+  We also set the max_t and min_t of the ray.
+
+  <br>
+  <br>
+
+  The <code>PathTacer::raytrace_pixel</code> function is used to estimate the radiance at each pixel. 
+  To achieve this, we first generate ns_aa number of rays that originate at the camera and passes through the pixel at the given point with some random offset on an image.
+  We use the <code>Camera::generate_ray(...)</code> function to do so. 
+  We follow each ray to estimate the radiance.
+  We sum all radiances and store the average value into sampleBuffer.
+
+  <br>
+  <br>
+
+</p>
+
+<h3>
+  Ray Intersection with Triangles
+</h3>
+<p>
+
+    To test intersection with triangle, we solve for time t when ray intersects with the plane in which the triangle lies. The intersection is only valid when the following two conditions is met. <br>
+    1. Time t for point of intersection must be greater than 0. <br>
+    2. Point of intersection must be within the triangle itself. We use barycentric coordinates to test this. If $(\alpha, \beta, \gamma)$ are all within 0 to 1, the intersection is valid. <br>
+    
+    <br>
+
+    We used the Möller-Trumbore Algorithm. This algorithm solves the function: $\vec{O} + t\vec{D} = (1 - b1 - b2)\vec{P_0} + b1\vec{P_1} + b2\vec{P_2}$. 
+    It is an optimized way to test for whether the intersection is within the triangle without first calculating the plane eqution. 
+
+    
 </p>
 <br>
 
 <h3>
-  Explain the triangle intersection algorithm you implemented in your own words.
+  Ray Intersection with Spheres
 </h3>
 <p>
-    YOUR RESPONSE GOES HERE
+  
+    To test intersection with spheres, we solve for time t when ray intersects the sphere. We solve the quadratic function, and there're three possible outcomes. <br>
+    1. There's no solution. This means that the ray does not intersect with the sphere. <br>
+    2. There's one solution. This means that the ray is tangent to the sphere. <br>
+    3. There're two solutions. If both t are greater than 0, we have two intersections with the sphere. <br>
+
 </p>
 <br>
 
@@ -95,24 +140,24 @@ Show images with normal shading for a few small .dae files. -->
   <table style="width:100%">
     <tr align="center">
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example1.dae</figcaption>
+        <img src="images/part1/CBempty.png" align="middle" width="400px"/>
+        <figcaption>Empty Room</figcaption>
       </td>
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example2.dae</figcaption>
+        <img src="images/part1/CBspheres.png" align="middle" width="400px"/>
+        <figcaption>Spheres with normal shading</figcaption>
       </td>
     </tr>
-    <tr align="center">
+    <!-- <tr align="center">
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example3.dae</figcaption>
+        <img src="images/part1/cow.png" align="middle" width="400px"/>
+        <figcaption>Cow</figcaption>
       </td>
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
+        <img src="images/part1/bunny.png" align="middle" width="400px"/>
         <figcaption>example4.dae</figcaption>
       </td>
-    </tr>
+    </tr> -->
   </table>
 </div>
 <br>
