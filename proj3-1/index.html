@@ -424,19 +424,19 @@ You will probably want to use the instructional machines for the above renders i
 <br>
 
 <h3>
-  Show some images rendered with global (direct and indirect) illumination. Use 1024 samples per pixel.
+  Bunny scene rendered with global (direct and indirect) illumination, using 1024 samples per pixel.
 </h3>
 <!-- Example of including multiple figures -->
 <div align="middle">
   <table style="width:100%">
     <tr align="center">
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example1.dae</figcaption>
+        <img src="images/part4/bunny/CBbunny_1024_1_1.png" align="middle" width="400px"/>
+        <figcaption>Direct illumination of bunny.dae</figcaption>
       </td>
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example2.dae</figcaption>
+        <img src="images/part4/bunny/CBbunny_1024_1_3.png" align="middle" width="400px"/>
+        <figcaption>Global illumination of bunny.dae</figcaption>
       </td>
     </tr>
   </table>
@@ -444,26 +444,39 @@ You will probably want to use the instructional machines for the above renders i
 <br>
 
 <h3>
-  Pick one scene and compare rendered views first with only direct illumination, then only indirect illumination. Use 1024 samples per pixel. (You will have to edit PathTracer::at_least_one_bounce_radiance(...) in your code to generate these views.)
+  CBspheres_lambertian.dae scene, rendered with 1024 samples per pixel.
 </h3>
 <!-- Example of including multiple figures -->
 <div align="middle">
   <table style="width:100%">
     <tr align="center">
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>Only direct illumination (example1.dae)</figcaption>
+        <img src="images/part4/illum/CBspheres_lambertian_1024_1_3_direct_illum.png" align="middle" width="400px"/>
+        <figcaption>Only direct illumination </figcaption>
       </td>
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>Only indirect illumination (example1.dae)</figcaption>
+        <img src="images/part4/illum/CBspheres_lambertian_1024_1_3_indirect_illum.png" align="middle" width="400px"/>
+        <figcaption>Only indirect illumination </figcaption>
       </td>
     </tr>
   </table>
 </div>
 <br>
 <p>
-    YOUR EXPLANATION GOES HERE
+  Direct illumination refers to light that comes directly from light sources and shines onto an object, 
+  while indirect illumination refers to light that has bounced off other objects and illuminates an object indirectly.
+
+  The scene above rendered with only direct illumination have very strong and defined shadows, 
+  with objects that are not directly illuminated appearing very dark or even black. 
+  The overall lighting in the scene is very dependent on the placement of the light sources. 
+
+  <br>
+  <br>
+  
+  On the other hand, the scene rendered with only indirect illumination have much softer shadows and a more diffused, natural lighting.
+  The scene has a more diffused and natural lighting, as light bounces around the environment and illuminates objects from various angles. 
+  
+  
 </p>
 <br>
 
@@ -475,27 +488,27 @@ You will probably want to use the instructional machines for the above renders i
   <table style="width:100%">
     <tr align="center">
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
+        <img src="images/part4/bunny/CBbunny_1024_1_0.png" align="middle" width="400px"/>
         <figcaption>max_ray_depth = 0 (CBbunny.dae)</figcaption>
       </td>
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
+        <img src="images/part4/bunny/CBbunny_1024_1_1.png" align="middle" width="400px"/>
         <figcaption>max_ray_depth = 1 (CBbunny.dae)</figcaption>
       </td>
     </tr>
     <tr align="center">
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
+        <img src="images/part4/bunny/CBbunny_1024_1_2.png" align="middle" width="400px"/>
         <figcaption>max_ray_depth = 2 (CBbunny.dae)</figcaption>
       </td>
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
+        <img src="images/part4/bunny/CBbunny_1024_1_3.png" align="middle" width="400px"/>
         <figcaption>max_ray_depth = 3 (CBbunny.dae)</figcaption>
       </td>
     </tr>
     <tr align="center">
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
+        <img src="images/part4/bunny/CBbunny_1024_1_100.png" align="middle" width="400px"/>
         <figcaption>max_ray_depth = 100 (CBbunny.dae)</figcaption>
       </td>
     </tr>
@@ -503,57 +516,75 @@ You will probably want to use the instructional machines for the above renders i
 </div>
 <br>
 <p>
-    YOUR EXPLANATION GOES HERE
+  The max_ray_depth parameter determines the maximum number of times that a light ray can bounce off surfaces in a scene before it is terminated. 
+  When max_ray_depth is set to 0, the rendered view will only show the light source itself.
+  And when max_ray_depth is set to 1, the rendered view shows only direct illumination.
+  Then, as the value of max_ray_depth is increases, the rendered view gets brighter, as light rays bounce off surfaces in the scene more times.
+  This leads to more diffuse lighting and softer shadows, as well as a greater sense of depth and realism in the scene.
+
+  <br>
+  <br>
+
+  However, increasing max_ray_depth beyond a certain point can lead to diminishing returns, 
+  as the effect of indirect illumination becomes less noticeable with each additional bounce. 
+  In the above scene, the image rendered with max_ray_depth set to 3 and max_ray_depth set to 100 is already very similar.
+  And the rendering process becomes significantly slower without a significant increase in visual quality.
+  
+
 </p>
 <br>
 
 <h3>
-  Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.
+  CBspheres_lambertian.dae scene, rendered with 4 light rays and various sample-per-pixel rate.
 </h3>
 <!-- Example of including multiple figures -->
 <div align="middle">
   <table style="width:100%">
     <tr align="center">
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>1 sample per pixel (example1.dae)</figcaption>
+        <img src="images/part4/varying_l/CBspheres_lambertian_1_4_3.png" align="middle" width="400px"/>
+        <figcaption>1 sample per pixel </figcaption>
       </td>
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>2 samples per pixel (example1.dae)</figcaption>
-      </td>
-    </tr>
-    <tr align="center">
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>4 samples per pixel (example1.dae)</figcaption>
-      </td>
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>8 samples per pixel (example1.dae)</figcaption>
+        <img src="images/part4/varying_l/CBspheres_lambertian_2_4_3.png" align="middle" width="400px"/>
+        <figcaption>2 samples per pixel </figcaption>
       </td>
     </tr>
     <tr align="center">
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>16 samples per pixel (example1.dae)</figcaption>
+        <img src="images/part4/varying_l/CBspheres_lambertian_4_4_3.png" align="middle" width="400px"/>
+        <figcaption>4 samples per pixel </figcaption>
       </td>
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>64 samples per pixel (example1.dae)</figcaption>
+        <img src="images/part4/varying_l/CBspheres_lambertian_8_4_3.png" align="middle" width="400px"/>
+        <figcaption>8 samples per pixel </figcaption>
       </td>
     </tr>
     <tr align="center">
       <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>1024 samples per pixel (example1.dae)</figcaption>
+        <img src="images/part4/varying_l/CBspheres_lambertian_16_4_3.png" align="middle" width="400px"/>
+        <figcaption>16 samples per pixel </figcaption>
+      </td>
+      <td>
+        <img src="images/part4/varying_l/CBspheres_lambertian_64_4_3.png" align="middle" width="400px"/>
+        <figcaption>64 samples per pixel </figcaption>
+      </td>
+    </tr>
+    <tr align="center">
+      <td>
+        <img src="images/part4/varying_l/CBspheres_lambertian_1024_4_3.png" align="middle" width="400px"/>
+        <figcaption>1024 samples per pixel </figcaption>
       </td>
     </tr>
   </table>
 </div>
 <br>
 <p>
-    YOUR EXPLANATION GOES HERE
+  The sample-per-pixel rate is the number of samples taken by the render for each pixel in the rendered image. 
+  As we can observe from above, images get smoother and less noisier as we increase the sample-per-pixel rate. 
+  This makes sense intuitively since as more samples are taken, lighting and material properties of the scene is better captured.
+
+
 </p>
 <br>
 
