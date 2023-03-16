@@ -1,4 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <style>
@@ -75,10 +74,10 @@
 
 <h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2023</h1>
 <h1 align="middle">Project 3-1: Path Tracer</h1>
-<h2 align="middle">YOUR NAME(S)</h2>
+<h2 align="middle">Zhihan Cheng, Yuerou Tang</h2>
 
 <!-- Add Website URL -->
-<h2 align="middle">Website URL: <a href="TODO">TODO</a></h2>
+<h2 align="middle">Website URL: <a href="https://cal-cs184-student.github.io/project-webpages-sp23-qs/proj3-1/index.html">https://cal-cs184-student.github.io/project-webpages-sp23-qs/proj3-1/index.html</a></h2>
 
 <br><br>
 
@@ -94,7 +93,9 @@
 
 <h2 align="middle">Overview</h2>
 <p>
-    YOUR RESPONSE GOES HERE
+    In this project, we implemented ray tracing methods. We started from constructing BVH, a data structure that allows us to compute ray intersection with objects
+    faster. We then first implemeneted direct lighting, which are lights that directly come from a light source. Then we implemented one bounce illumination, which 
+    are the lights that bounce off from other objects. We also implemented Russian Roulette and Adaptive sampling to enable more efficient rendering.  
 </p>
 <br>
 
@@ -301,7 +302,7 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
     point (<code>hit_p</code>), we first estimate how much light arrived at the point. In this approach,
     we implemented it by uniformly sampling the hemisphere around <code>hit_p</code> to get the possible rays 
     that might hit the intersection (blue rays below in the illustration).
-    <img>
+    <p align = "middle"><img src="./images/part4/4_illu.jpg" align="middle" width="400px"/></p>
     We then test if the ray intersects the scene. If it does, we have obtained the necessary components to calculate radiance from the intersection with this 
     formula:
     <p align = "middle"><img src="./images/part1/montecarla.png" align="middle" width="400px"/></p>
@@ -315,7 +316,7 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
     from a hemisphere, we instead will sample the light directly. <code>SceneLight::sample_L(Vector3D& p, Vector3D* wi, double* distToLight, double* pdf)</code>
     takes 1 sample, and returns the sampled ray (between the object and the light source direction), the sampled emittance, 
     distance from the object to the light source and the pdf of the sampled direction. We can then use the distance 
-    from the object to the lightsource to check if there's any surface in front of the light source (between the light source
+    from the object to the lightsource, and check if the ray intersects any surface in front of the light source within this range (between the light source
     and the object). If there is, then the light doesn't really cast any radiance to the object. If there isn't then we calculate
     radiance from that field with the same technique as above. 
   </p>
@@ -339,7 +340,7 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
     <br>
     <tr align="center">
       <td>
-        <img src="./images/part3/CBbunny_H_64_32.png" align="middle" width="400px"/>
+        <img src="./images/part3/CBbunny_64_32_H.png" align="middle" width="400px"/>
         <figcaption>CBbunny.dae, s = 64, l = 32</CBbunny></figcaption>
       </td>
       <td>
@@ -401,7 +402,7 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
 <p>
   Hemisphere sampling produced a more grainy result, and the details were not as good as importance sampling. There is also less noise on importance sampling result.
   This was very obvious in the background -- hemisphere sampling produced a coarse background, while importance sampling produced a smoother one. This could be due 
-  to the face that hemisphere sampling takes in vectors from all directions with equal weight, but only a few rays are contributing to the final radiance, while importance
+  to the fact that hemisphere sampling takes in vectors from all directions with equal weight, but only a few rays are contributing to the final radiance, while importance
   sampling weighted them with their probability. 
 </p>
 <br>
@@ -421,8 +422,12 @@ You will probably want to use the instructional machines for the above renders i
 <p>
     We implemented the <code>PathTracer::at_least_one_bounce_radiance</code> function to achieve global illumination with ray bouncing multiple times in the scene. 
     We first account for cases where max_ray_depth is 0 or 1 in the <code>PathTracer::est_radiance_global_illumination</code> function. 
-    Then, inside <code>PathTracer::at_least_one_bounce_radiance</code> function, we first calculate the once_bounce_radiance at the hit point, and sample a direction and its corresponding next intersection point with 
+    Then, inside <code>PathTracer::at_least_one_bounce_radiance</code> function, we first calculate the onc_bounce_radiance at the hit point, and sample a direction and its corresponding next intersection point with 
     <code>DiffuseBSDF::sample_f</code>.
+    <p align = "middle">
+      <img src="images/part3/3_illu.jpg" align="middle" width="400px"/>
+
+    </p>
     The next intersection is where light would bounce to, or come from, since in ray tracing, we are doing it backwards. 
     And then we check for conditions to continue the recursion:
     <ol>
@@ -434,6 +439,7 @@ You will probably want to use the instructional machines for the above renders i
     and use the reflection function to add the next bounce radiance to current radiance.
 </p>
 <br>
+
 
 <h3>
   Bunny scene rendered with global (direct and indirect) illumination, using 1024 samples per pixel.
