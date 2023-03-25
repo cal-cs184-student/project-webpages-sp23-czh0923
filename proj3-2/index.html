@@ -28,37 +28,8 @@
         }
 
 
-        #comparisonTable th {
-            background-color: rgb(197, 215, 249);
-        }
-
-        /* 
-  #comparisonTable table, td, th {  
-    border: 1px solid #ddd;
-    text-align: left;
-  } */
-
-        #comparisonTable table {
-            border: 1px solid #ddd;
-            text-align: left;
-
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        #comparisonTable th {
-            border: 1px solid #ddd;
-            text-align: left;
-            padding: 15px;
-        }
-
-        #comparisonTable td {
-            border: 1px solid #ddd;
-            text-align: left;
-            padding: 15px;
-        }
     </style>
-    <title>Zhihan Cheng, Yuerou Tang | CS 184</title>
+    <title>Yuerou Tang, Zhihan Cheng | CS 184</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
@@ -87,9 +58,20 @@
     <div class="padded">
 
 
-        * NOTE: For this project, you will choose TWO out of the four given parts to complete. One of those parts must
+        <!-- * NOTE: For this project, you will choose TWO out of the four given parts to complete. One of those parts must
         be Part 1 or Part 2. In other words, you can choose any combination of two parts except the pair (Part 3, Part
-        4).
+        4). -->
+
+        <br><br>
+
+
+        <div align="center">
+
+        <img src="images/ultimateDragon.png" title="my dragon is the shiniest dragon" width="600px" />
+        <!-- <figcaption align="middle">my dragon is the shiniest dragon</figcaption> -->
+        </div>
+
+        <br>
 
 
         <h3 align="middle">Part 1. Mirror and Glass Materials</h3>
@@ -147,7 +129,8 @@
         </p>
         <br>
         <p><b>
-                Point out the new multibounce effects that appear in each image.
+                Point out the new multibounce effects that appear in each image. Explain how these bounce numbers relate to the particular effects that appear. 
+                <!-- Make sure to include all screenshots. -->
             </b></p>
         <p>
             When max_ray_depth = 0, since there's no bouncing of light, we're only seeing the light source. 
@@ -162,18 +145,40 @@
             When max_ray_depth = 100, the scene became very bright due to the amount of bouncing that we're allowing. 
         </p>
         <br>
-        <p><b>
-                Explain how these bounce numbers relate to the particular effects that appear. Make sure to include all
-                screenshots.
-            </b></p>
-        <p>
-            
-        </p>
-        <br>
+       
 
+        <h3 align="middle">Part 2. Microfacet Material (Not for Grade)</h3>
 
-        <h3 align="middle">Part 2. Microfacet Material</h3>
         <p><b>
+            CBdragon_microfacet_au.dae 
+        </b></p>
+
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="images/part2/dragon_s16l4m4alpha5.png" align="middle" width="400px" />
+                        <figcaption>alpha = 0.5</figcaption>
+                    </td>
+                    <td>
+                        <img src="images/part2/dragon_s16l4m4alpha005.png" align="middle" width="400px" />
+                        <figcaption>alpha = 0.005</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <p><b>
+            CBdragon_microfacet, boron metal
+        </b></p>
+
+        <div align="center">
+
+            <img src="images/part2/boron.png" width="480px" />
+        </div>
+    
+
+        <!-- <p><b>
                 Show a screenshot sequence of 4 images of scene `CBdragon_microfacet_au.dae` rendered with $\alpha$ set
                 to 0.005, 0.05, 0.25 and 0.5. The other settings should be at least 128 samples per pixel and 1 samples
                 per light. The number of bounces should be at least 5. Describe the differences between different
@@ -200,12 +205,12 @@
         <p>
             Your response goes here.
         </p>
-        <br>
+        <br> -->
 
 
 
 
-        <h3 align="middle">Part 3. Environment Lightl</h3>
+        <!-- <h3 align="middle">Part 3. Environment Lightl</h3>
         <b>Pick one *.exr* file to use for all subparts here. Include a converted *.jpg* of it in your website so we
             know what map you are using.</b>
 
@@ -242,37 +247,99 @@
         <p>
             Your response goes here.
         </p>
-        <br>
+        <br> -->
 
 
 
         <h3 align="middle">Part 4. Depth of Field</h3>
-        <b>
+        <!-- <b>
             For these subparts, we recommend using a microfacet BSDF scene to show off the cool out of focus effects you
             can get with depth of field!
-        </b>
-        <p><b>
+        </b> -->
+        <!-- <p><b>
                 In a few sentences, explain the differences between a pinhole camera model and a thin-lens camera model.
-            </b></p>
+            </b></p> -->
         <p>
-            Your response goes here.
+            In pinhole camera model, we assume that light travels in straight line from each point on an object to a single point on the image plane through a small aperture or pinhole. 
+            This model does not account for lens distortion or the effects of refraction, and all pixels are in focused. 
+            <br>
+            
+            On the other hand, the thin-lens camera model assumes that light from a point on an object passes through a thin lens and forms an image on the opposite side of the lens. 
+            This model more accurately captures what happens in reality when we capture images with cameras or see scenes with our eyes. 
+            Only objects with distance from camera equals the focal distance are clear while all other objects are blurred. 
+            This model accounts for lens distortion and refraction effects, but assumes that the lens is thin and that light passes through the center of the lens.
         </p>
         <br>
         <p><b>
-                Show a "focus stack" where you focus at 4 visibly different depths through a scene. Make sure to include
-                all screenshots.
+                CBdragon.dae "focus stack", rendered with -t 8 -s 512 -a 64 0.05 -r 640 480 -m 12 -l 4 -b 0.23, and various -d    
             </b></p>
+        
+
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="images/part4/dragon_b023d45.png" align="middle" width="400px" />
+                        <figcaption>d = 4.5</figcaption>
+                    </td>
+                    <td>
+                        <img src="images/part4/dragon_b023d47.png" align="middle" width="400px" />
+                        <figcaption>d = 4.7</figcaption>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td>
+                        <img src="images/part4/dragon_b023d49.png" align="middle" width="400px" />
+                        <figcaption>d = 4.9</figcaption>
+                    </td>
+                    <td>
+                        <img src="images/part4/dragon_b023d51.png" align="middle" width="400px" />
+                        <figcaption>d = 5.1</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
         <p>
-            Your response goes here.
+           As we can observe from above rendering, as we increase focal distance, the plane of focus moves away from the camera, and the part of the dragon that is focused move from its head to its tail. 
         </p>
+
         <br>
         <p><b>
-                Show a sequence of 4 pictures with visibly different aperture sizes, all focused at the same point in a
-                scene. Make sure to include all screenshots.
+                <!-- Show a sequence of 4 pictures with visibly different aperture sizes, all focused at the same point in a
+                scene. Make sure to include all screenshots. -->
+                CBdragon.dae, rendered with -t 8 -s 512 -a 64 0.05 -r 640 480 -m 12 -l 4 -d 4.5, and various -b 
             </b></p>
+        
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="images/part4/dragon_b013d45.png" align="middle" width="400px" />
+                        <figcaption>b = 0.13</figcaption>
+                    </td>
+                    <td>
+                        <img src="images/part4/dragon_b033d45.png" align="middle" width="400px" />
+                        <figcaption>b = 0.33</figcaption>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td>
+                        <img src="images/part4/dragon_b053d45.png" align="middle" width="400px" />
+                        <figcaption>b = 0.53</figcaption>
+                    </td>
+                    <td>
+                        <img src="images/part4/dragon_b073d45.png" align="middle" width="400px" />
+                        <figcaption>d = 0.73</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
         <p>
-            Your response goes here.
+            As we increase aperture size, light can pass larger area of the lens. The objects that are not on the focus plane becomes blurrier.
         </p>
+
         <br>
 
     </div>
