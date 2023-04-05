@@ -101,25 +101,84 @@
 
 <h2 align="middle">Problem Description</h2>
 <p>
-    In this project, we attempted to render a scene with sky and rainbow. 
-    We would like to render the sky by simulating the atmospheric scattering and sunlight, 
-    and use them to calculate the color of the pixels.   
+    
+In this project, we hope to provide realistic rendering of the sky, and build upon it to possibly add rainbows and/or other scenes. The challenge with this project is creating the sky that accurately depicts the lighting conditions that occur in real life. The atmosphere is a complex medium that interacts with light in various ways. The scattering of light, absorption, and other atmospheric effects all adds to the complexity of this task. We plan to approach this problem by building physical models with specialized software tools and using various computer graphics techniques such as physical-based rendering.
+
+<br>
+We aim to create a model that can provide high-quality and dynamic natural environment rendering using physical equations. The realistic environment contains a variety of different features. In this project, we will focus on rendering a realistic sky that varies from different atmospheric effects and water surfaces in the shape of waves that can reflect the features in the sky. The objectives of the projects are:
+
+To utilize the scattering equation (Rayleigh Scattering vs. Mie Scattering) that scatter rays with different wavelengths to different angles, which enables dynamic changes in the color of the sky as the angle of solar radiation changes, such as blue during the day and red or orange during the sunrise and sunset.
+To incorporate the formation and movement of clouds into the simulation, taking into account the interaction of light with water droplets, including their effect on sunlight and shadows, such as the appearance of rainbows.
+To develop a water surface model by doing geometric displacement computation and lighting computation. 
+  
 </p>
 <br>
 
 <h2 align="middle">Goals and Deliverables</h2>
 <p>
-    In this project, we attempted to render a scene with sky and rainbow. 
-    We would like to render the sky by simulating the atmospheric scattering and sunlight, 
-    and use them to calculate the color of the pixels.   
+    What we plan to deliver:
+    <ul>
+        <li>Rendered pictures of the sky at different times of the 
+            day or/and with different atmospheric conditions, such as density and composition
+            <li>
+                Ideally we can adjust the parameters to create the sky at different times of 
+                the day. It’s possible for us to make parameter selection interactive. 
+            </li>
+        </li>
+      </ul>
+    What we hope to deliver:
+    <ul>
+        <li>
+            Rendered pictures of the sky with rainbows
+        </li>
+        <li>
+            Real time rendering of the sky and the rainbow
+        </li>
+    </ul>
+    
+ 
 </p>
 <br>
 
 <h2 align="middle">Schedule</h2>
 <p>
-    In this project, we attempted to render a scene with sky and rainbow. 
-    We would like to render the sky by simulating the atmospheric scattering and sunlight, 
-    and use them to calculate the color of the pixels.   
+    Week of 4/4: 
+    <ul>
+        <li>
+            Set up environment and workflow
+        </li>
+        <li>
+            Make sure the workflow is able to render dummy images that are of one color
+        </li>
+        <li>
+            Read through papers/articles addressing the topic, understand the physics and math for scattering
+        </li>
+    </ul>
+    Week of 4/11:
+    <ul>
+        <li>
+            Implement atmospheric scattering with Rayleigh and Mie scattering
+        </li>
+    </ul>
+    Week of 4/18:
+    <ul>
+        <li>
+            Adjust parameters of scattering, such as the scattering coefficients, 
+            to create different views of the sky
+        </li>
+    </ul>
+    Week of 4/25:
+    <ul>
+        <li>
+            Wrap up implementation, render final pictures
+        </li>
+        <li>
+            If time permits, experiment with real time rendering of modified sun 
+            angles or other changing parameters
+
+        </li>
+    </ul>
+  
 </p>
 <br>
 
