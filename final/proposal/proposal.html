@@ -102,37 +102,87 @@
 <h2 align="middle">Problem Description</h2>
 <p>
     
-In this project, we hope to provide realistic rendering of the sky, and build upon it to possibly add rainbows and/or other scenes. The challenge with this project is creating the sky that accurately depicts the lighting conditions that occur in real life. The atmosphere is a complex medium that interacts with light in various ways. The scattering of light, absorption, and other atmospheric effects all adds to the complexity of this task. We plan to approach this problem by building physical models with specialized software tools and using various computer graphics techniques such as physical-based rendering.
+    In this project, we hope to provide realistic rendering of the sky, and build upon it to possibly add rainbows and/or other scenes. The challenge with this project is creating the sky that accurately depicts the lighting conditions that occur in real life. The atmosphere is a complex medium that interacts with light in various ways. The scattering of light, absorption, and other atmospheric effects all adds to the complexity of this task. We plan to approach this problem by building physical models with specialized software tools and using various computer graphics techniques such as physical-based rendering.
 
-<br>
-We aim to create a model that can provide high-quality and dynamic natural environment rendering using physical equations. The realistic environment contains a variety of different features. In this project, we will focus on rendering a realistic sky that varies from different atmospheric effects and water surfaces in the shape of waves that can reflect the features in the sky. The objectives of the projects are:
 
-To utilize the scattering equation (Rayleigh Scattering vs. Mie Scattering) that scatter rays with different wavelengths to different angles, which enables dynamic changes in the color of the sky as the angle of solar radiation changes, such as blue during the day and red or orange during the sunrise and sunset.
-To incorporate the formation and movement of clouds into the simulation, taking into account the interaction of light with water droplets, including their effect on sunlight and shadows, such as the appearance of rainbows.
-To develop a water surface model by doing geometric displacement computation and lighting computation. 
+    We aim to create a model that can provide high-quality and dynamic natural environment rendering using physical equations. The realistic environment contains a variety of different features. In this project, we will focus on rendering a realistic sky that varies from different atmospheric effects and water surfaces in the shape of waves that can reflect the features in the sky. The objectives of the projects are:
+    <ol>
+        <li>
+            To utilize the scattering equation (Rayleigh Scattering vs. Mie Scattering) that scatter rays with different wavelengths to different angles, which enables dynamic changes in the color of the sky as the angle of solar radiation changes, 
+            such as blue during the day and red or orange during the sunrise and sunset.
+        </li>
+        <li>
+            To incorporate the formation and movement of clouds into the simulation, taking into account the interaction of light with water droplets, 
+            including their effect on sunlight and shadows, such as the appearance of rainbows.
+        </li>
+        <li>
+            To develop a water surface model by doing geometric 
+            displacement computation and lighting computation.
+        </li>
+        <li>
+            To further optimize the model for real-time performance and resource utilization, 
+            and explore methods to reduce rendering time and space usage.
+        </li>
+    </ol>    
   
 </p>
 <br>
 
 <h2 align="middle">Goals and Deliverables</h2>
 <p>
+    If we got to a real-time simulation of sky and rainbow, we plan to create a demo that allows users to adjust various parameters of the sky and atmospheric conditions in real-time and see the results of their changes immediately. The demo would include a 
+    graphical user interface (GUI) that allows users to adjust parameters such as:
     What we plan to deliver:
     <ul>
-        <li>Rendered pictures of the sky at different times of the 
-            day or/and with different atmospheric conditions, such as density and composition
-            <li>
-                Ideally we can adjust the parameters to create the sky at different times of 
-                the day. It’s possible for us to make parameter selection interactive. 
-            </li>
+        <li>
+            Time of day: Users can adjust the time of day and see how the color and position of the sun changes the appearance of the sky.
+
         </li>
-      </ul>
+        <li>
+            Atmospheric conditions: Users can adjust parameters such as air density, composition, and haze to simulate different atmospheric conditions, such as a smoggy city or a clear day in the mountains.
+        </li>
+        <li>
+            Rainbow generation: Users can generate and adjust rainbows, including the size, shape, and color of the rainbow.
+        </li>
+        <li>
+            Camera control: Users can adjust the camera position and orientation to view the sky and environment from different angles and positions.
+
+        </li>
+    </ul>
+    To measure the quality and performance of our system, we plan to use several metrics, including:
+    <ul>
+        <li>
+            Rendering time: We will measure the time it takes for our system to render a frame. This will be an important metric for real-time rendering applications, where fast rendering is critical for a smooth user experience.
+
+        </li>
+        <li>
+            Frames per second (FPS): We will measure the number of frames our system can render per second. This metric is important for real-time rendering applications, where a high FPS is necessary for a smooth and responsive experience.
+
+        </li>
+        <li>
+            Accuracy: We will compare the output of our system to reference images or physical measurements to assess the accuracy of our simulation. For example, we can compare the color and shape of the simulated sky and rainbow to actual photographs.
+
+        </li>
+    </ul>
+    What we plan to deliver:
+    <ul>
+        <li>
+            Rendered pictures of the sky at different times of the day or/and with different atmospheric conditions, such as density and composition
+            <ul>
+                <li>
+                    Even if we couldn’t finish real time rendering, we can still allow users to adjust parameters for atmospheric scatter or rainbow appearance
+                </li>
+            </ul>
+        </li>
+    </ul>
     What we hope to deliver:
     <ul>
         <li>
-            Rendered pictures of the sky with rainbows
+            Rendered pictures of the sky with rainbows 
         </li>
         <li>
-            Real time rendering of the sky and the rainbow
+            Real time rendering of the sky and the rainbow 
+
         </li>
     </ul>
     
@@ -184,9 +234,24 @@ To develop a water surface model by doing geometric displacement computation and
 
 <h2 align="middle">Resources</h2>
 <p>
-    In this project, we attempted to render a scene with sky and rainbow. 
-    We would like to render the sky by simulating the atmospheric scattering and sunlight, 
-    and use them to calculate the color of the pixels.   
+    Refereces:
+    For simulating the sky:
+    <ul>
+        <li>
+            Scratchapixel. (n.d.). Simulating colors of the sky. https://www.scratchapixel.com/lessons/procedural-generation-virtual-worlds/simulating-sky/simulating-colors-of-the-sky.html
+
+        </li>
+        <li>
+            Nishita, T., Nakamae, E., Miyawaki, Y., & Shinya, M. (1993). A display method of the earth taking into account atmospheric scattering. SIGGRAPH '93 Proceedings of the 20th annual conference on Computer graphics and interactive techniques, 175-182. http://nishitalab.org/user/nis/cdrom/sig93_nis.pdf
+
+        </li>
+        <li>
+            Bruneton, E., & Neyret, F. (2008). Accurate atmospheric scattering. GPU Gems 2, 175-198. https://developer.nvidia.com/gpugems/gpugems2/part-ii-shading-lighting-and-shadows/chapter-16-accurate-atmospheric-scattering
+        </li>
+        <li>
+            Habel, R., Kuhlen, T., & Dachsbacher, C. (2020). Real-time rendering of atmospheric phenomena using voxel cone tracing. Computer Graphics Forum, 39(4), 107-119. https://sebh.github.io/publications/egsr2020.pdf
+        </li>
+    </ul> 
 </p>
 <br>
 
