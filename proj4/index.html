@@ -1,4 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <style>
@@ -320,7 +319,11 @@
     </b></blockquote>
 
     <p>
-      TODO
+      Shaders are programs that run in parallel with the GPU. It describes operation on a single fragment or a vertex. <br>
+      A vertex shader apply transformations to 
+      vertices, modify the normal and position of vertex, and write the changes to gl_Position and other varyings such as normals to the fragment shader. <br>
+      A fragment shader computes the color of the fragments outputted after rasterization based on the attributes calculated by the vertex shader. It write the color
+      into out_out. 
     </p>
 
 
@@ -330,29 +333,32 @@
     </b></blockquote>
 
     <p>
-      TODO
+      Blinn-Phong shading takes into account 3 components of light -- ambient light, specular light, and diffuse lighting. Each of the lighting is weighted by a coefficient. 
+      For the specular component, it's the light reflected specularly by the surface, and it's calculated by looking at the angle between the bisector of the light source and view direction, and the surface normal. 
+      Increasing \(p\), the exponent of \(max(0, cos\space\alpha)\) would narrow the reflection lobe (the highlight part on the surface). 
+
     </p>
 
     <div align="middle">
       <table style="width:100%">
         <tr align="center">
           <td>
-              <img src="images/t5-blinn-phong-ambient.png" align="middle" width="400px" />
+              <img src="images/part5/bp_ambient.png" align="middle" width="400px" />
               <figcaption>Ambient component only</figcaption>
               
           </td>
           <td>
-              <img src="images/t5-blinn-phong-diffuse.png" align="middle" width="400px" />
+              <img src="images/part5/bp_diffuse.png" align="middle" width="400px" />
               <figcaption>Diffuse component only</figcaption>
           </td>
         </tr>
         <tr align="center">
           <td>
-              <img src="images/t5-blinn-phong-specular.png" align="middle" width="400px" />
+              <img src="images/part5/bp_specular.png" align="middle" width="400px" />
               <figcaption>Specular component only</figcaption>
           </td>
           <td>
-              <img src="images/t5-blinn-phong-all.png" align="middle" width="400px" />
+              <img src="images/part5/bp.png" align="middle" width="400px" />
               <figcaption>Complete Blinn-Phong model</figcaption>
           </td>
         </tr>
@@ -363,9 +369,12 @@
     <blockquote><b>
     Show a screenshot of your texture mapping shader using your own custom texture by modifying the textures in <code>/textures/</code>.
     </b></blockquote>
+    <p>
+      We used custom texture by having the shader take samples from our custom texture at the texture space coordinate uv.
+    </p>
 
     <div align="middle">
-      <img src="images/t5-custom-texture.png" align="middle" width="100%" />
+      <img src="images/part5/custom.png" align="middle" width="400px" />
     </div>
 
 
@@ -383,23 +392,23 @@
       <table style="width:100%">
         <tr align="center">
           <td>
-            <img src="images/t5-bump-mapping-cloth.png" align="middle" width="400vw" />
+            <img src="images/part5/bump.png" align="middle" width="400vw" />
             <figcaption>Bump Mapping on the Cloth</figcaption>
           </td>
           <td>
-            <img src="images/t5-bump-mapping-sphere.png" align="middle" width="400vw" />
+            <img src="images/part5/bump_sphere.png" align="middle" width="400vw" />
             <figcaption>Bump Mapping on the Sphere</figcaption>
           </td>
           <td>
         </tr>
         <tr align="center">
           <td>
-            <img src="images/t5-displacement-mapping-sphere.png" align="middle" width="400vw" />
-            <figcaption>Displacement Mapping on the Sphere</figcaption>
+            <img src="images/part5/displacement_ball_128x128.png" align="middle" width="400vw" />
+            <figcaption>Displacement Mapping on the Sphere, resolution = 128x128</figcaption>
           </td>
           <td>
-            <img src="images/t5-displacement-mapping-sphere-2.png" align="middle" width="400vw" />
-            <figcaption>Displacement Mapping on the Sphere (coarser mesh)</figcaption>
+            <img src="images/part5/displacement_ball_16x16.png" align="middle" width="400vw" />
+            <figcaption>Displacement Mapping on the Sphere (coarser mesh) resolution = 16x16</figcaption>
           </td>
           <td>
         </tr>
@@ -407,7 +416,9 @@
     </div>
 
     <p>
-      TODO
+      Bump mapping created the height on the surface of the sphere, but it didn't change the location of the vertices -- only the way in which the fragments are rendered
+      are different. The height of the surface were not actually changing -- the color that they are appearing as faked the change.
+       Displacement Mapping changed the location of the vertices of the sphere, so the shape is now more distorted, and the height of the surface is now changing. 
     </p>
 
 
@@ -419,11 +430,11 @@
       <table style="width:100%">
         <tr align="center">
           <td>
-            <img src="images/t5-mirror-shader-cloth.png" align="middle" width="400vw" />
+            <img src="images/part5/mirror.png" align="middle" width="400vw" />
             <figcaption>Mirror Shader on the Cloth</figcaption>
           </td>
           <td>
-            <img src="images/t5-mirror-shader-sphere.png" align="middle" width="400vw" />
+            <img src="images/part5/mirror_ball.png" align="middle" width="400vw" />
             <figcaption>Mirror Shader on the Sphere</figcaption>
           </td>
           <td>
@@ -471,10 +482,17 @@
     clearly describe what you did and provide screenshots that illustrate your work. 
     If it is an improvement compared to something already existing on the cloth simulation, 
     compare and contrast them both in words and in images.
-    </b></blockquote>
+    </b></blockquote>s
 
-    <p>
-      N/A
+    <p >
+      <h3 align = "middle">EC: Color for Bump Mapping</h3>
+      We thought it would be cute if we can have a pink sphere with heart textures, so we multiplied the out_color of bump fragments with u_color, and added color control 
+      to the scene. <br>
+      <p align = "middle">
+        <img src="images/ec/color.png" align="middle" width="400vw" />
+      </p>
+      
+
     </p>
 
 </body>
