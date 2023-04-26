@@ -113,25 +113,34 @@
         </ul>
     </p>
     <h3 align = "middle"> Color of the Sunlight</h3>
-    <p>
+    <p align = "middle">
         As we talked before, the color that we see when looking at the sky is mostly caused by the in-scattering of sunlight. 
         To determine the color of a pixel on our final image, we need to integrate all the light along the ray which the pixel 
         on the image is shooting. <br>
 
         Suppose we only have 1 light ray from the source, then the color of the pixel is completely 
         determined by the scattering of the single source light ray, and the intensity of the ray can give us the final color. <br>
+        <img src="image/simplemodel.jpg" width="480px" align = "middle" />
+        <figcaption align="middle">Only 1 Source Light Ray </figcaption>
 
         However, in reality, our light source is oftentimes countless parallel rays coming from the sunlight, so the color of
-        our pixel at the end will be a composite of many scattered rays. So the color at the end should be \(\int_{P_c}^{P_a}L(x)dx\), 
+        our pixel at the end will be a composite of many scattered rays. So the color at the end should be \(\int_{P_c}^{P_a}L(X)dX\), 
         an integration of all the light along the direction of our camera ray. <br>
+        <p align = "middle"><img src="image/fullmodel.jpg" width="480px" align = "middle" />
+        <figcaption align="middle">Multiple Source Light Ray </figcaption></p>
 
-        To calculate this integration, we used a ray-marching algorithm. We basically take samples long the direction of our camera ray, 
-        and use a Riemann sum of our samples to calculate the integral. The amount of light transmitted through
-        the atmosphere and reach our camera ray is governed by Beer-Lambert Law, and this is called the transmittance of light through a volume. 
-        Therefore, our main equation used for evaluating the color of a pixel is \(L(P_c, P_a) = \int_{P_a}^{P_c}T(P_c, X)L_{sun}(X)dX\), where
-        \(T(P_c, X)L_{sun}(X)\) represents the sunlight ray that got deflected and reached our camera ray, and \(T(P_c, X)\) is the transmittance
-        of light in that area of the atmosphere.
-         
+        First let's look at each possible \(X\), the intersection of the source light ray with the camera ray. For a source light ray to reach the 
+        camera ray, it has to undergo a volume of atmosphere. Therefore, the amount of light that reaches our camera ray is governed by Beer-Lamber Law, and it 
+        will be \(L_{sun} = Sun\space Intensity * T(P_s, X)\). <br>
+        <p align = "middle"><img src="image/T(PsX).jpg" width="480px" align = "middle" />
+            <figcaption align="middle">Amount of light that pass through the atmosphere to reach our camera ray</figcaption></p>
+        Next, after the deflected light reaches our camera ray, it still has to pass some volume of atmosphere to evetually reach our camera. <br>
+        <p align = "middle"><img src="image/T(PcX).jpg" width="480px" align = "middle" />
+            <figcaption align="middle">Amount of light that pass through the atmosphere to reach our camera</figcaption></p>
+        This part of light
+        is therefore also governed by Beer-Lambert Law, and if we integrate with respect to all possible \(X\) on the camera ray, then our final integration 
+        will be \(L(P_c, P_a) = \int_{P_a}^{P_c}T(P_c, X)L_{sun}(X)dX\), where \(L_{sun} = Sun\space Intensity * T(P_s, X)\). 
+        
         
     </p>
 
