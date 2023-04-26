@@ -1,0 +1,320 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style>
+  body {
+    background-color: white;
+    padding: 100px;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    color: #121212;
+
+    letter-spacing: 1px;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+  kbd {
+    color: #121212;
+  }
+
+
+  #comparisonTable th {
+  background-color: rgb(197, 215, 249);
+  }
+
+/* 
+  #comparisonTable table, td, th {  
+    border: 1px solid #ddd;
+    text-align: left;
+  } */
+
+  #comparisonTable table {
+    border: 1px solid #ddd;
+    text-align: left;
+
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  #comparisonTable th {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 15px;
+  } 
+
+  #comparisonTable td {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 15px;
+  } 
+
+</style>
+<title>CS 184 Path Tracer</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script>
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+
+</head>
+
+
+<body>
+
+<h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2023</h1>
+<h1 align="middle">Final Project: Sky, and Rainbow</h1>
+<h2 align="middle">Zhihan Cheng, Yuerou Tang, Debby Lin, Long He</h2>
+
+<!-- Add Website URL -->
+<h2 align="middle">Proposal URL: <a href="https://cal-cs184-student.github.io/project-webpages-sp23-qs/final/proposal/proposal.html">https://cal-cs184-student.github.io/project-webpages-sp23-qs/final/proposal/proposal.html</a></h2>
+<h2 align="middle">Milestone URL: <a href="https://cal-cs184-student.github.io/project-webpages-sp23-qs/final/milestone/milestone.html">https://cal-cs184-student.github.io/project-webpages-sp23-qs/final/milestone/milestone.html</a></h2>
+
+<br><br>
+
+
+<div align="center">
+
+  <img src="nishita_demo.png" width="480px" />
+  <figcaption align="middle">Rendered Sky from Nishita et al., Siggraph 1993</figcaption>
+</div>
+
+<br>
+
+
+<h2 align="middle"> What We Have So Far</h2>
+<p>
+    So far, we are focusing on understanding the math and physics behind basic atmospheric scattering. 
+    Our notes on atmospheric scattering so far is here:
+    <h3 align = "middle"> Set up for our scene </h3>
+    <p>
+        Since our model will focus on atmospheric scattering, our assumption is that the light source that
+        we will get is the sun. However, if there is no scattering, then we won't see anything in the Sky unless
+        we're looking directly at the sun. Therefore, we will be simulating <b>single scattering</b> so that we can 
+        see the color of the sky. Tnis color is caused by sun light being deflected and scatteredn by particles light encountered, 
+        and the goal of our project is to simulate this color. We will be focusing on 2 kinds of scattering:
+        <ul>
+            <li>
+                Rayleigh scattering: scattering by small particles such as air particles 
+            </li>
+            <li>
+                Mie Scattering: scattering by aerosols such as dust. These molecules are generally bigger. 
+            </li>
+        </ul>
+    </p>
+    <h3 align = "middle"> Color of the Sunlight</h3>
+    <p>
+        As we talked before, the color that we see when looking at the sky is mostly caused by the in-scattering of sunlight. 
+        To determine the color of a pixel on our final image, we need to integrate all the light along the ray which the pixel 
+        on the image is shooting. <br>
+
+        Suppose we only have 1 light ray from the source, then the color of the pixel is completely 
+        determined by the scattering of the single source light ray, and the intensity of the ray can give us the final color. <br>
+
+        However, in reality, our light source is oftentimes countless parallel rays coming from the sunlight, so the color of
+        our pixel at the end will be a composite of many scattered rays. So the color at the end should be \(\int_{P_c}^{P_a}L(x)dx\), 
+        an integration of all the light along the direction of our camera ray. <br>
+
+        To calculate this integration, we used a ray-marching algorithm. We basically take samples long the direction of our camera ray, 
+        and use a Riemann sum of our samples to calculate the integral. The amount of light transmitted through
+        the atmosphere and reach our camera ray is governed by Beer-Lambert Law, and this is called the transmittance of light through a volume. 
+        Therefore, our main equation used for evaluating the color of a pixel is \(L(P_c, P_a) = \int_{P_a}^{P_c}T(P_c, X)L_{sun}(X)dX\), where
+        \(T(P_c, X)L_{sun}(X)\) represents the sunlight ray that got deflected and reached our camera ray, and \(T(P_c, X)\) is the transmittance
+        of light in that area of the atmosphere.
+         
+        
+    </p>
+
+    
+</p>
+<br>
+
+<h2 align="middle"> Preliminary Results</h2>
+<p>
+    
+    In this project, we hope to provide realistic rendering of the sky, and build upon it to possibly add rainbows and/or other scenes. The challenge with this project is creating the sky that accurately depicts the lighting conditions that occur in real life. The atmosphere is a complex medium that interacts with light in various ways. The scattering of light, absorption, and other atmospheric effects all adds to the complexity of this task. We plan to approach this problem by building physical models with specialized software tools and using various computer graphics techniques such as physical-based rendering.
+
+
+    We aim to create a model that can provide high-quality and dynamic natural environment rendering using physical equations. The realistic environment contains a variety of different features. In this project, we will focus on rendering a realistic sky that varies from different atmospheric effects and water surfaces in the shape of waves that can reflect the features in the sky. The objectives of the projects are:
+    <ol>
+        <li>
+            To utilize the scattering equation (Rayleigh Scattering vs. Mie Scattering) that scatter rays with different wavelengths to different angles, which enables dynamic changes in the color of the sky as the angle of solar radiation changes, 
+            such as blue during the day and red or orange during the sunrise and sunset.
+        </li>
+        <li>
+            To incorporate the formation and movement of clouds into the simulation, taking into account the interaction of light with water droplets, 
+            including their effect on sunlight and shadows, such as the appearance of rainbows.
+        </li>
+        <li>
+            To develop a water surface model by doing geometric 
+            displacement computation and lighting computation.
+        </li>
+        <li>
+            To further optimize the model for real-time performance and resource utilization, 
+            and explore methods to reduce rendering time and space usage.
+        </li>
+    </ol>    
+  
+</p>
+<br>
+
+<h2 align="middle">Updated Progress Plan</h2>
+<p>
+    If we got to a real-time simulation of sky and rainbow, we plan to create a demo that allows users to adjust various parameters of the sky and atmospheric conditions in real-time and see the results of their changes immediately. The demo would include a 
+    graphical user interface (GUI) that allows users to adjust parameters such as:
+    What we plan to deliver:
+    <ul>
+        <li>
+            Time of day: Users can adjust the time of day and see how the color and position of the sun changes the appearance of the sky.
+
+        </li>
+        <li>
+            Atmospheric conditions: Users can adjust parameters such as air density, composition, and haze to simulate different atmospheric conditions, such as a smoggy city or a clear day in the mountains.
+        </li>
+        <li>
+            Rainbow generation: Users can generate and adjust rainbows, including the size, shape, and color of the rainbow.
+        </li>
+        <li>
+            Camera control: Users can adjust the camera position and orientation to view the sky and environment from different angles and positions.
+
+        </li>
+    </ul>
+    To measure the quality and performance of our system, we plan to use several metrics, including:
+    <ul>
+        <li>
+            Rendering time: We will measure the time it takes for our system to render a frame. This will be an important metric for real-time rendering applications, where fast rendering is critical for a smooth user experience.
+
+        </li>
+        <li>
+            Frames per second (FPS): We will measure the number of frames our system can render per second. This metric is important for real-time rendering applications, where a high FPS is necessary for a smooth and responsive experience.
+
+        </li>
+        <li>
+            Accuracy: We will compare the output of our system to reference images or physical measurements to assess the accuracy of our simulation. For example, we can compare the color and shape of the simulated sky and rainbow to actual photographs.
+
+        </li>
+    </ul>
+    What we plan to deliver:
+    <ul>
+        <li>
+            Rendered pictures of the sky at different times of the day or/and with different atmospheric conditions, such as density and composition
+            <ul>
+                <li>
+                    Even if we couldn’t finish real time rendering, we can still allow users to adjust parameters for atmospheric scatter or rainbow appearance
+                </li>
+            </ul>
+        </li>
+    </ul>
+    What we hope to deliver:
+    <ul>
+        <li>
+            Rendered pictures of the sky with rainbows 
+        </li>
+        <li>
+            Real time rendering of the sky and the rainbow 
+
+        </li>
+    </ul>
+    
+ 
+</p>
+<br>
+
+<h2 align="middle">Schedule</h2>
+<p>
+    Week of 4/4: 
+    <ul>
+        <li>
+            Set up environment and workflow
+        </li>
+        <li>
+            Make sure the workflow is able to render dummy images that are of one color
+        </li>
+        <li>
+            Read through papers/articles addressing the topic, understand the physics and math for scattering
+        </li>
+    </ul>
+    Week of 4/11:
+    <ul>
+        <li>
+            Implement atmospheric scattering with Rayleigh and Mie scattering
+        </li>
+    </ul>
+    Week of 4/18:
+    <ul>
+        <li>
+            Adjust parameters of scattering, such as the scattering coefficients, 
+            to create different views of the sky
+        </li>
+    </ul>
+    Week of 4/25:
+    <ul>
+        <li>
+            Wrap up implementation, render final pictures
+        </li>
+        <li>
+            If time permits, experiment with real time rendering of modified sun 
+            angles or other changing parameters
+
+        </li>
+    </ul>
+  
+</p>
+<br>
+
+<h2 align="middle">Resources</h2>
+<p>
+    Refereces:
+    For simulating the sky:
+    <ul>
+        <li>
+            Scratchapixel. (n.d.). Simulating colors of the sky. https://www.scratchapixel.com/lessons/procedural-generation-virtual-worlds/simulating-sky/simulating-colors-of-the-sky.html
+
+        </li>
+        <li>
+            Nishita, T., Nakamae, E., Miyawaki, Y., & Shinya, M. (1993). A display method of the earth taking into account atmospheric scattering. SIGGRAPH '93 Proceedings of the 20th annual conference on Computer graphics and interactive techniques, 175-182. http://nishitalab.org/user/nis/cdrom/sig93_nis.pdf
+
+        </li>
+        <li>
+            Bruneton, E., & Neyret, F. (2008). Accurate atmospheric scattering. GPU Gems 2, 175-198. https://developer.nvidia.com/gpugems/gpugems2/part-ii-shading-lighting-and-shadows/chapter-16-accurate-atmospheric-scattering
+        </li>
+        <li>
+            Habel, R., Kuhlen, T., & Dachsbacher, C. (2020). Real-time rendering of atmospheric phenomena using voxel cone tracing. Computer Graphics Forum, 39(4), 107-119. https://sebh.github.io/publications/egsr2020.pdf
+        </li>
+    </ul> 
+    For the rainbow:
+    <ul>
+        <li>
+            Bruneton, E., & Neyret, F. (2008). Accurate atmospheric scattering. GPU Gems 2, 175-198. https://developer.nvidia.com/gpugems/gpugems2/part-ii-shading-lighting-and-shadows/chapter-16-accurate-atmospheric-scattering
+        </li>
+    </ul>
+    For potential real time rendering:
+    <ul>
+        <li>
+            Boubekeur, T., & Schlick, C. (2008). Efficient evaluation of functions defined by distance fields. In Proceedings of the 2008 ACM symposium on Solid and physical modeling (pp. 87-98). https://hal.inria.fr/inria-00288758/document
+        </li>
+    </ul>
+    For realistic water rendering:
+    <ul>
+        <li>
+            NVIDIA Corporation. (n.d.). Chapter 18: Using Vertex Texture Displacement. In GPU Gems 2: Programming Techniques for High-Performance Graphics and General-Purpose Computation (pp. 245-270). Addison-Wesley Professional. https://developer.nvidia.com/gpugems/gpugems2/part-ii-shading-lighting-and-shadows/chapter-18-using-vertex-texture-displacement
+        </li>
+    </ul>
+    Computing Platform: we will likely be using our local machine for rendering the images. Code will be in C++. 
+</p>
+<br>
+
+
+
+</body>
+</html>
