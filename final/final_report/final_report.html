@@ -191,7 +191,88 @@
   light will travel that we multiplied was the length of the segment), so we thought it would be more accurate to
   sample the segment at the end of it.
   <h2 align="middle"> Volume Rendering: Results</h2>
-  TBD
+  <div align="middle">
+    <table style="width:100%">
+      <tr align="center">
+        <td>
+          <img src="./images/normal/skydome.0000.png" align="middle" width="170px" />
+          <figcaption>Angle = 0.00</figcaption>
+        </td>
+        <td>
+          <img src="./images/normal/skydome.0005.png" align="middle" width="170px" />
+          <figcaption>Angle = 6.07</figcaption>
+        </td>
+        <td>
+          <img src="./images/normal/skydome.0010.png" align="middle" width="170px" />
+          <figcaption>Angle = 12.13</figcaption>
+        </td>
+        <td>
+          <img src="./images/normal/skydome.0015.png" align="middle" width="170px" />
+          <figcaption>Angle = 18.20</figcaption>
+        </td>
+        <td>
+          <img src="./images/normal/skydome.0020.png" align="middle" width="170px" />
+          <figcaption>Angle = 24.27</figcaption>
+        </td>
+        <td>
+          <img src="./images/normal/skydome.0025.png" align="middle" width="170px" />
+          <figcaption>Angle = 30.34</figcaption>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <img src="./images/normal/skydome.0030.png" align="middle" width="170px" />
+          <figcaption>Angle = 36.40</figcaption>
+        </td>
+        <td>
+          <img src="./images/normal/skydome.0035.png" align="middle" width="170px" />
+          <figcaption>Angle = 42.47</figcaption>
+        </td>
+        <td>
+          <img src="./images/normal/skydome.0040.png" align="middle" width="170px" />
+          <figcaption>Angle = 48.54</figcaption>
+        </td>
+        <td>
+          <img src="./images/normal/skydome.0045.png" align="middle" width="170px" />
+          <figcaption>Angle = 54.61</figcaption>
+        </td>
+        <td>
+          <img src="./images/normal/skydome.0050.png" align="middle" width="170px" />
+          <figcaption>Angle = 60.67</figcaption>
+        </td>
+        <td>
+          <img src="./images/normal/skydome.0055.png" align="middle" width="170px" />
+          <figcaption>Angle = 66.74</figcaption>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <img src="./images/normal/skydome.0060.png" align="middle" width="170px" />
+          <figcaption>Angle = 72.81</figcaption>
+        </td>
+        <td>
+          <img src="./images/normal/skydome.0065.png" align="middle" width="170px" />
+          <figcaption>Angle = 78.88</figcaption>
+        </td>
+        <td>
+          <img src="./images/normal/skydome.0070.png" align="middle" width="170px" />
+          <figcaption>Angle = 84.94</figcaption>
+        </td>
+        <td>
+          <img src="./images/normal/skydome.0075.png" align="middle" width="170px" />
+          <figcaption>Angle = 91.01</figcaption>
+        </td>
+        <td>
+          <img src="./images/normal/skydome.0080.png" align="middle" width="170px" />
+          <figcaption>Angle = 97.08</figcaption>
+        </td>
+        <td>
+          <img src="./images/normal/skydome.0085.png" align="middle" width="170px" />
+          <figcaption>Angle = 103.15</figcaption>
+        </td>
+      </tr>
+    </table>
+  </div>
 
   <h2 align="middle"> Tone Mapping: Technical Approach </h2>
   <p>In reality, the luminance of the sky can be arbitrarily high, with values in the range of $[0, \infty)$ at each
@@ -492,8 +573,42 @@
   it used were all for vertex shaders. We adapted the methods
   described in the article for a brute force calculation within our rendering function. After calculating the color of
   the pixel, we then use the camera ray projected by this pixel
-  and viewing direction, and proceed to the texture map to query the color at this pixel location.
+  and viewing direction, and proceed to the texture map to query the color at this pixel location.<br>
+  After rendering the results, we are actually a bit confused if we are rendering halo or rainbow, because halo is
+  circular around
+  the sun, and rainbow is more like an arch. (but it looks good either way)
   <h2 align="middle">Rainbow, or Halo?: Results</h2>
+  hmm, so is this halo or rainbow?
+  <div align="middle">
+    <table style="width:100%">
+      <tr align="center">
+        <td>
+          <img src="./images/rainbows/skydome.0020.png" align="middle" width="170px" />
+          <figcaption>Angle = 24.27</figcaption>
+        </td>
+        <td>
+          <img src="./images/rainbows/skydome.0040.png" align="middle" width="170px" />
+          <figcaption>Angle = 48.54</figcaption>
+        </td>
+        <td>
+          <img src="./images/rainbows/skydome.0050.png" align="middle" width="170px" />
+          <figcaption>Angle = 60.67</figcaption>
+        </td>
+        <td>
+          <img src="./images/rainbows/skydome.0060.png" align="middle" width="170px" />
+          <figcaption>Angle = 72.81</figcaption>
+        </td>
+        <td>
+          <img src="./images/rainbows/skydome.0070.png" align="middle" width="170px" />
+          <figcaption>Angle = 84.94</figcaption>
+        </td>
+        <td>
+          <img src="./images/rainbows/skydome.0075.png" align="middle" width="170px" />
+          <figcaption>Angle = 91.01</figcaption>
+        </td>
+      </tr>
+    </table>
+  </div>
   <h2 align="middle">Problems Encountered in Implementation</h2>
   We had a LOT of troubles understanding the physics and math behind the scene, especially the integration. While it
   took a while to understanding the conceptual integration,
