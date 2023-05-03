@@ -159,10 +159,27 @@
     One modification that we made is instead of assuming that the light source ray is sampled from the center of the segment, we assumed that the light ray is from the end of the segment, because when
     we were doing calculations, we assumed the light source ray traveled through the whole sample (the distance that the light will travel that we multiplied was the length of the segment), so we thought it would be more accurate to sample the segment at the end of it. 
 <h3 align = "middle">Rainbow, or Halo?</h3>
-    
-</p>
+    We found a <a href = "http://download.nvidia.com/developer/SDK/Individual_Samples/DEMOS/Direct3D9/src/HLSL_RainbowFogbow/docs/RainbowFogbow.pdf"> guide</a> provided by 
+    Nvidia on rendering rainbows and other natual effects caused by waterdrops in the air. Rainbows (and Halo) is caused by refractions of light with different wavelength
+    inside the water droplet. The color of the rainbow is determined by the angle of deviation (angle between the eye and the sunlight) and radius of the waterdrop. A Lee diagram
+    provides a precomputed texture. With a precomputed lookup table for rainbow color, we were able to sample the lookup table as a texture, and blend the sampled color with the computed
+    sky color. The X-axis of the lookup table is the radius of the water droplet, which we could determine based on the different visual effects we want, and the Y-axis 
+    of the lookup table is the angle between the sun direction and the view direction (our camera ray direction).  <br>
+    While the conceptual ideas were simple, this tutorial provided by Nvidia was intended for shaders, and the terminology it used were all for vertex shaders. We adapted the methods
+    described in the article for a brute force calculation within our rendering function. After calculating the color of the pixel, we then use the camera ray projected by this pixel
+    and viewing direction, and proceed to the texture map to query the color at this pixel location. 
 
-    
+<h3 align = "middle">Problems Encountered</h3>
+    We had a LOT of troubles understanding the physics and math behind the scene, especially the integration. While it took a while to understanding the conceptual integration, 
+    it took us even longer to understand the Ray-marching algorithm described by <a href = "https://www.scratchapixel.com/lessons/3d-basic-rendering/volume-rendering-for-developers/intro-volume-rendering.html">Scratchapixel</a>.
+    We even had a <a href = "https://www.notion.so/sky-rainbow-b756e5f9540344feb524788b5c53e664?pvs=4">shared page</a> where we write down our understanding of the tutorials and the paper. <br>
+    We were also having troubles with implementing our ideas using C++. For the rainbow section, the conceptual idea of sampling a texture was very simple, but it took us a long time to finally load 
+    the texture using C++. We spent hours reading OpenCV documentation for C++ and also tried the library used by staff for Project 4, the <code>stb_image</code> library. 
+<h3 align = "middle">Lessons Learned</h3>
+    Learning about the physics behind the sky was very interesting, and when we finally understood it, it was very fulfilling. <br>
+    We also regret not using Python for the project. We used C++ because we've been using C++ throughout the semester, but C++ was so painful, and for the purpose of our project (simulating rays to calculate pixel color), we could have used Python. In addition, since 
+    our project was not built on top of existing class projects, we were able to directly borrow the staff code. So when I tried to borrow code from class projects, it took me an hour to realize that CGL was a custom
+    library written by the staff, and we were NOT using OpenGL directly!
 </p>
 
 </body>
