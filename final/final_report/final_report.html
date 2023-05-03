@@ -102,14 +102,70 @@
 
 
   <h2 align="middle"> Abstract </h2>
+
+  <p>
+    Our group attempted to render scenes of sky and halos. 
+    We rendered the sky using volume rendering with two different types of atmospheric scattering: Rayleigh and Mie. 
+    We also delved into tone mapping to generate realistic images, and acceleration structure to real time sky rendering. 
+    We further added the feature of rendering halos around the sun from physical computation and color mapping. We managed to provide fast rendering of the sky with different viewing perspectives as well as features of adding halos.
+  </p>
+  <h2 align="middle"> Model </h2>
+  <p>
+    The atmosphere model we'll be using in our final project is defined as two concentric spheres. 
+    The center is always at (0, 0, 0). 
+
+    The inner sphere represents the Earth. The Earth's radius is defined to be 6360 km.
+    The outer sphere represents the atmosphere. The atmosphere radius is defined to be 6420 km. 
+
+    We define the sun as being infinitely far away from us, so the sun light reaching the Earth is modeled as parraleled light. 
+    The sun lies on the yz plane. 
+    It's direction is specified by angel $\theta$, which is the angle between the sun and y axis.
+
+    We are able to represent two kinds of images with this model. 
+    <ul>
+      <li>Fisheye</li>
+      Fisheye images are rendered by specifying a camera location (Pc) and looking up from the camera at the sky. The image captures all 360 degree view.
+      <li>Normal Camera</li>
+      Normal camera images are rendered by specifying a camera location (Pc) with a FOV. We specify a plane on the z axis for our image, 
+      and calculate the size of the image in world space by using the size of image we want to render and FOV of our camera.
+    </ul>
+
+    <br>
+    <div align="middle">
+      <table style="width:100%">
+        <tr align="center">
+          <td>
+            <img src="./images/model/fisheye.jpeg" align="middle" width="260px" />
+            <figcaption>Fisheye Camera</figcaption>
+          </td>
+          <td>
+            <img src="./images/model/normal.jpeg" align="middle" width="340px" />
+            <figcaption>Normal Camera</figcaption>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <br>
+
+    Below is an illustration of our atmosphere model. 
+
+    <figure align="middle">
+      <img src="/final/final_report/images/atmosphere_model.jpeg" width="350px" align="middle">
+      </figcaption>
+    </figure>
+
+  </p>
+
+  <br>
   <h2 align="middle"> Volume Rendering: Technical Approach</h2>
-  <p align="middle">
+  <p>
     The most central idea to our project is Volume Rendering, as this is how we determine the color of every pixel. We
     learned about Volume Render mostly from a series
     of online lessons provided by <a
       href="https://www.scratchapixel.com/lessons/3d-basic-rendering/volume-rendering-for-developers/intro-volume-rendering.html">Scratchapixel</a>.
-  <h4> Scattering </h4>
-  The atmosphere is not vacuum. TIt contains small air particles and aerosols, and they caused scattering effects. We
+  <h3> Scattering </h4>
+  The atmosphere is not vacuum. It contains small air particles and aerosols, and they caused scattering effects. We
   will be focusing on 2 kinds of scattering:
   <ul>
     <li>
@@ -127,18 +183,23 @@
   can pass throught the atmosphere is governed by Beer-Lamber Law, and the transmittence of that in that medium
   is \(T = e^{-distance*\sigma}\), where \(\sigma\) is the scattering coefficient of the medium. The equations for
   Rayleigh and Mie scattering can tell us this coefficient. <br>
-  For Rayleigh scattering, $$\beta(h) = \frac{8\pi^3(n^2-1)^2}{3N\lambda^4}e^{-\frac{h}{H_R}}$$. \(h\) is the height
+  <br>
+  For Rayleigh scattering, $$\beta(h) = \frac{8\pi^3(n^2-1)^2}{3N\lambda^4}e^{-\frac{h}{H_R}}$$ 
+  \(h\) is the height
   of which we are calculating the scattering coefficient.<br>
-  For Mie scattering, $$\beta(h) = \beta(0)e^{-\frac{h}{H_M}}$$. \(\beta(0)\) is the Mie scattering coefficient at sea
+
+  <br>
+  For Mie scattering, $$\beta(h) = \beta(0)e^{-\frac{h}{H_M}}$$
+   \(\beta(0)\) is the Mie scattering coefficient at sea
   level. \(h\) is the height of which we are calculating the scattering coefficient. <br>
   Therefore, both scattering coefficients vavaries with elevation. <br>
 
-  <h4> Rendering the Volume</h4>
+  <h3> Rendering the Volume</h4>
   For every pixel on the screen, we shoot a ray from the pixel, and integrate along this camera ray to obtain the
   final color of the pixel. <br>
   <figure align="middle">
     <img src="../milestone/image/simplemodel.jpg" width="400px" align="middle">
-    <figcaption>We will integrate along the purple ray to obtain the final pixel of the source pixel of the purple
+    <figcaption style="text-align: left;">We will integrate along the purple ray to obtain the final pixel of the source pixel of the purple
       ray. The outer circle is the atmosphere, and the inner circle is the earth. \(P_c\) is the position of the
       camera,
       \(P_a\) is where our camera ray hits the edge of the atmosphere, and \(P_s\) is where the sunlight hits the
@@ -172,13 +233,13 @@
   Law and multiply it with intensity? Remember that both Rayleight and Mie scattering coefficients varies with
   elevation, and as sunlight travels, the elevation changes,
   so the transmittence of light changes as it travels. Therefore, the sunlight that reaches one segment $X$ of the
-  camera ray can be expressed as: $$L_{sun}(X) = Sun\space Intensity * T(X, P_s) * P(V,L)*\beta$$. $P(V,L)$ is the
+  camera ray can be expressed as: $$L_{sun}(X) = Sun\space Intensity * T(X, P_s) * P(V,L)*\beta.$$ $P(V,L)$ is the
   phase function for scattering, and it tells us about how much light is scattered for a particular viewing direction.
   It's givien by the type of scattering. We will do the integration at the end to combine the two integrals. <br>
   After obtaining the amount of light at each segment, we can sum them up to obtain the final color, taking into
   consideration that to eventually reach the camera,
   the camera ray will also travel through the atmosphere, and scattering will also occur. Therefore, the conceptual
-  formula is: $$L=\int_{P_c}^{P_a} L_{sun}(X)T(P_c, X)dX$$, and we
+  formula is: $$L=\int_{P_c}^{P_a} L_{sun}(X)T(P_c, X)dX,$$ and we
   substitute $L_{sun}$ into the integration. <br>
   In practice, for each segment, we shoot a ray from the segment, and divide this light source ray into another 8
   segments, and sum up their resulted light vector. Then for each segment on the camera ray,
@@ -274,6 +335,7 @@
     </table>
   </div>
 
+  <br>
   <h2 align="middle"> Tone Mapping: Technical Approach </h2>
   <p>In reality, the luminance of the sky can be arbitrarily high, with values in the range of $[0, \infty)$ at each
     point.
@@ -449,7 +511,17 @@
       </tr>
     </table>
   </div>
+
+
+  <br>
+  ChatGPT has also given us their own tone mapping. 
+  From this cartoon like gif, we are able to see the power of tone mapping. 
+  Through a simple function, the appearance of an image can be dramastically changed. 
+  <p style="text-align:center;"><img src="images/tonemapping/chatgptTone.gif" width="250px"></p>
   </p>
+
+
+
 
   <br>
   <h2 align="middle"> A Peak into Real-Time Rendering </h2>
