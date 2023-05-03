@@ -22,7 +22,8 @@
 
 
   #comparisonTable th {
-  background-color: rgb(197, 215, 249);
+  /* background-color: rgb(197, 215, 249); */
+  background-color: rgb(247, 247, 247);
   }
 
 /* 
@@ -42,13 +43,13 @@
   #comparisonTable th {
     border: 1px solid #ddd;
     text-align: left;
-    padding: 15px;
+    padding: 7px;
   } 
 
   #comparisonTable td {
     border: 1px solid #ddd;
     text-align: left;
-    padding: 15px;
+    padding: 7px;
   } 
 
 </style>
@@ -73,16 +74,16 @@
 <body>
 
 <h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2023</h1>
-<h1 align="middle">Final Project: Sky, and Rainbow</h1>
-<h2 align="middle">Zhihan Cheng, Yuerou Tang, Debby Lin, Long He</h2>
+<h1 align="middle">Final Report: Sky, and Rainbow (or Halo?)</h1>
+<h2 align="middle">Yuerou Tang, Zhihan Cheng, Long He, Debby Lin</h2>
 
 <br>
 <!-- Add Website URL -->
-<h4>Proposal URL: <a href="https://cal-cs184-student.github.io/project-webpages-sp23-qs/final/proposal/proposal.html">https://cal-cs184-student.github.io/project-webpages-sp23-qs/final/proposal/proposal.html</a></h4>
+<!-- <h4>Proposal URL: <a href="https://cal-cs184-student.github.io/project-webpages-sp23-qs/final/proposal/proposal.html">https://cal-cs184-student.github.io/project-webpages-sp23-qs/final/proposal/proposal.html</a></h4>
 <h4>Milestone URL: <a href="https://cal-cs184-student.github.io/project-webpages-sp23-qs/final/milestone/milestone.html">https://cal-cs184-student.github.io/project-webpages-sp23-qs/final/milestone/milestone.html</a></h4>
 
 <h4>Presentation Slides: <a href="https://docs.google.com/presentation/d/1X-Q1tBVeLp8mKCGx8GPwmvqmqJyHFNyYadMLDevG_4E/edit?usp=sharing">https://docs.google.com/presentation/d/1X-Q1tBVeLp8mKCGx8GPwmvqmqJyHFNyYadMLDevG_4E/edit?usp=sharing</a></h4>
-<h4>Video Link: <a href="https://drive.google.com/file/d/1FMtKwod_yaLLsnQnkDgIgp_s0AnwtQw5/view?usp=sharing">https://drive.google.com/file/d/1FMtKwod_yaLLsnQnkDgIgp_s0AnwtQw5/view?usp=sharing</a></h4>
+<h4>Video Link: <a href="https://drive.google.com/file/d/1FMtKwod_yaLLsnQnkDgIgp_s0AnwtQw5/view?usp=sharing">https://drive.google.com/file/d/1FMtKwod_yaLLsnQnkDgIgp_s0AnwtQw5/view?usp=sharing</a></h4> -->
 
 <br><br>
 
@@ -96,108 +97,287 @@
 <!-- <br> -->
 
 
-<h2 align="middle"> What We Have So Far</h2>
-<p>
-    Sky rendering involves complex mathematical calculations, and our team has been conducting extensive research to better understand the math and physics behind atmospheric scattering. 
+<h2 align="middle"> Abstract </h2>
+<h2 align="middle"> Techinical Approach </h2>
+<h3 align="middle"> Raileigh Scattering </h2>
+<h3 align="middle"> Mie Scattering </h2>
+<h3 align="middle"> Camera </h2>
+<h4> Fisheye </h2>
+<h4> Normal Camera </h2>
+<h2 align="middle"> Tone Mapping </h2>
+  <p>In reality, the luminance of the sky can be arbitrarily high, with values in the range of $[0, \infty)$ at each point. 
+    However, computer screens have limited display capabilities and can only show RGB colors within the range of $[0, 255]$. 
+    As a result, any values above 255 will be clipped during rendering, resulting in a loss of detail. 
+    To address this problem, we use tone mapping, a mathematical technique that maps values from the high dynamic range (HDR) of $[0, \infty)$ to the low dynamic range (LDR) of $[0, 255]$.
+    <br>
+    In our project, we have experimented with several tone mapping techniques.
 
-    Our notes on atmospheric scattering so far is here:
-    <h3> Volume Rendering </h3>
-    <p>
-        Through research, we have learned that the Earth’s atmosphere can be modeled as a volume of gas with particles in it that interact with light. So, we start our research by exploring the concept of volume rendering. We learned concepts such as absorption, transmittance, extinction, emission, particle density and techniques such as ray-marching. By gaining a better understanding of volume rendering, we were able to approach the task of sky rendering with greater clarity and less abstraction.
-        We have experimented with volume rendering ourselves, and here are some results. 
-    </p>
-    <div align="center">
-        <img src="image/vr.png" width="480px" />
+    <ol>
+      <li> Reinhard </li>
+
+      This is one of the simplest tone mapping operator. It is calculated as: $$L_{out} = \frac{L_{in}}{L_{in} + 1}$$
+
+      <li> Extended Reinhard </li>
+
+      Standard Reinhard tone mapping does not utilize the full range of our Low Dynamic Range. Extended Reinhard takes into account of the brightest radiance in our image and maps that value to $(1.0, 1.0, 1.0)$. 
+      We define the brightest luminance as $L_{white}$. Extended Reinhard tone mapping equation is as follows: $$L_{out} = \frac{L_{in}}{1 + \frac{L_{in}}{L_{white}^2}}$$
+
+      <li> Extended Reinhard (Luminance Tone Mapping) </li>
+
+      The above TMO operates on individual color channel instead of total luminance, but luminance is also an important part of how an image appears. 
+      A color value might be the same, but they will appear brighter. For example, (0.0, 1.0, 0.0), green, appears brigher than (0.0, 0.0, 1.0), blue. 
+      Luminance tone mapping a technique that takes luminance into account. 
+      The equation is given by: $$L_{out} = L_{in} \frac{Lum_{in}}{Lum_{out}},$$ where Lum is calculated as: $$ Lum = 0.2126R + 0.7152G + 0.0722B$$
+
+      <li> Uncharted Filmic Tone Mapping </li>
+
+      The filmic tone mapping curve is another technique commonly used. It differs from reinhard TMO as it is based on a more complex model of human vision, 
+      which takes into account phenomena such as color adaptation and contrast sensitivity. 
+
+      It is calculated as follows: 
+      $$L_{out} = \frac{L_{in} * (A * L_{in} + C * B) + D * E}{L_{in} * (A * L_{in} + B) + D * F} - \frac{E}{F}$$
+      <!-- $$L_{out} = ((L_{in} * (A * L_{in} + C * B) + D * E) / (L_{in} * (A * L_{in} + B) + D * F)) - E / F,$$ -->
+      for uncharted2, the basic parameters are defined as:
+      <br>
+      <div id="comparisonTable">
+        <table>
+          <tr>
+            <th>A</th>
+            <th>B</th>
+            <th>C</th>
+            <th>D</th>
+            <th>E</th>
+            <th>F</th>
+          </tr>
+          <tr>
+            <td>0.15f</td>
+            <td>0.50f</td>
+            <td>0.10f</td>
+            <td>0.20f</td>
+            <td>0.02f</td>
+            <td>0.30f</td>
+          </tr>
+        
+        </table>
+      </div>
+
+      <br>
+    
+
+      <li> Approximate ACES (Academic Color Encoding System) </li>
+
+      This is another commonly used filmic tone mapping. We use the simplified, approximate version by Krzysztof Narkowicz.
+      It is calculated as: 
+      $$L_{in} *= 0.6$$
+      $$L_{out} = \frac{L_{in} * (A * L_{in} + B)}{L_{in} * (C * L_{in} + D) + E}$$
+      <!-- $$L_{out} = (L_{in} * (A * L_{in} + B)) / (L_{in} * (C * L_{in} + D) + E),$$ -->
+
+      the parameters are defined as:
+
+      <div id="comparisonTable">
+        <table>
+          <tr>
+            <th>A</th>
+            <th>B</th>
+            <th>C</th>
+            <th>D</th>
+            <th>E</th>
+          </tr>
+          <tr>
+            <td>2.51f</td>
+            <td>0.03f</td>
+            <td>2.43f</td>
+            <td>0.59f</td>
+            <td>0.14f</td>
+          </tr>
+        
+        </table>
+      </div>
+
+    </ol>
+
+
+    <br>
+
+    Here are our results, we included the image rendered with no mapping tone for reference. 
+    <br><br>
+    Sequence 40, sun angle = 48.54.
+
+    <div align="middle">
+      <table style="width:100%">
+        <tr align="center">
+          <td>
+            <img src="./images/tonemapping/notone_40.jpeg" align="middle" width="170px"/>
+            <figcaption>No Tone</figcaption>
+          </td>
+          <td>
+            <img src="./images/tonemapping/reinhard_40.jpeg" align="middle" width="170px"/>
+            <figcaption>Reinhard</figcaption>
+          </td>
+          <td>
+            <img src="./images/tonemapping/extended_reinhard_40.jpeg" align="middle" width="170px"/>
+            <figcaption>Extended Reinhard</figcaption>
+          </td>
+          <td>
+            <img src="./images/tonemapping/extended_reinhard_lum_40.jpeg" align="middle" width="170px"/>
+            <figcaption>Reinhard with Lum</figcaption>
+          </td>
+          <td>
+            <img src="./images/tonemapping/uncharted2_40.jpeg" align="middle" width="170px"/>
+            <figcaption>uncharted2</figcaption>
+          </td>
+          <td>
+            <img src="./images/tonemapping/aces_approx_40.jpeg" align="middle" width="170px"/>
+            <figcaption>ACES approx</figcaption>
+          </td>
+        </tr>
+      </table>
     </div>
 
-    <h3> Set up for our scene </h3>
-    <!-- <h3 align = "middle"> Set up for our scene </h3> -->
-    <p>
-        Since our model will focus on atmospheric scattering, our assumption is that the light source that
-        we will get is the sun. However, if there is no scattering, then we won't see anything in the Sky unless
-        we're looking directly at the sun. Therefore, we will be simulating <b>single scattering</b> so that we can 
-        see the color of the sky. Tnis color is caused by sun light being deflected and scatteredn by particles light encountered, 
-        and the goal of our project is to simulate this color. We will be focusing on 2 kinds of scattering:
-        <ul>
-            <li>
-                Rayleigh scattering: scattering by small particles such as air particles 
-            </li>
-            <li>
-                Mie Scattering: scattering by aerosols such as dust. These molecules are generally bigger. 
-            </li>
-        </ul>
-    </p>
-    <h3> Color of the Sunlight</h3>
-    <p>
-        As we talked before, the color that we see when looking at the sky is mostly caused by the in-scattering of sunlight. 
-        To determine the color of a pixel on our final image, we need to integrate all the light along the ray which the pixel 
-        on the image is shooting. <br>
+    <br>
 
-        Suppose we only have 1 light ray from the source, then the color of the pixel is completely 
-        determined by the scattering of the single source light ray, and the intensity of the ray can give us the final color. <br>
-        <div align="center">
-            <img src="image/simplemodel.jpg" width="480px" />
-            <figcaption align="middle">Only 1 Source Light Ray </figcaption>
-        </div>
-    
-        <br>
+    Sequence 60, sun angle = 72.81. 
 
-        However, in reality, our light source is oftentimes countless parallel rays coming from the sunlight, so the color of
-        our pixel at the end will be a composite of many scattered rays. So the color at the end should be \(\int_{P_c}^{P_a}L(X)dX\), 
-        an integration of all the light along the direction of our camera ray. <br>
-        <p align = "middle"><img src="image/fullmodel.jpg" width="480px" align = "middle" />
-        <figcaption align="middle">Multiple Source Light Ray </figcaption></p>
 
-        <br>
-        First let's look at each possible \(X\), the intersection of the source light ray with the camera ray. For a source light ray to reach the 
-        camera ray, it has to undergo a volume of atmosphere. Therefore, the amount of light that reaches our camera ray is governed by Beer-Lamber Law, and it 
-        will be \(L_{sun} = Sun\space Intensity * T(P_s, X)\). <br>
-        <p align = "middle"><img src="image/T(PsX).jpg" width="480px" align = "middle" />
-            <figcaption align="middle">Amount of light that pass through the atmosphere to reach our camera ray</figcaption></p>
-        Next, after the deflected light reaches our camera ray, it still has to pass some volume of atmosphere to evetually reach our camera. <br>
-        <p align = "middle"><img src="image/T(PcX).jpg" width="480px" align = "middle" />
-        <figcaption align="middle">Amount of light that pass through the atmosphere to reach our camera</figcaption></p>
+    <div align="middle">
+      <table style="width:100%">
+        <tr align="center">
+          <td>
+            <img src="./images/tonemapping/notone_60.jpeg" align="middle" width="170px"/>
+            <figcaption>No Tone</figcaption>
+          </td>
+          <td>
+            <img src="./images/tonemapping/reinhard_60.jpeg" align="middle" width="170px"/>
+            <figcaption>Reinhard</figcaption>
+          </td>
+          <td>
+            <img src="./images/tonemapping/extended_reinhard_60.jpeg" align="middle" width="170px"/>
+            <figcaption>Extended Reinhard</figcaption>
+          </td>
+          <td>
+            <img src="./images/tonemapping/extended_reinhard_lum_60.jpeg" align="middle" width="170px"/>
+            <figcaption>Reinhard with Lum</figcaption>
+          </td>
+          <td>
+            <img src="./images/tonemapping/uncharted2_60.jpeg" align="middle" width="170px"/>
+            <figcaption>uncharted2</figcaption>
+          </td>
+          <td>
+            <img src="./images/tonemapping/aces_approx_60.jpeg" align="middle" width="170px"/>
+            <figcaption>ACES approx</figcaption>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </p>
 
-        <br>
-        This part of light
-        is therefore also governed by Beer-Lambert Law, and if we integrate with respect to all possible \(X\) on the camera ray, then our final integration 
-        will be \(L(P_c, P_a) = \int_{P_a}^{P_c}T(P_c, X)L_{sun}(X)dX\), where \(L_{sun} = Sun\space Intensity * T(P_s, X)\). 
-        
-        
-    </p>
-
-    
-</p>
 <br>
+<h2 align="middle"> A Peak into Real-Time Rendering </h2>
+  <p>
 
-<h2 align="middle"> Preliminary Results</h2>
-<p>
-    Apart from basic understanding of the math behind sky rendering, we have also built our atmosphere model. 
-    The model is defined as a spherical volume of gas surrounding another sphere representing the Earth. 
-    The size of these two spheres are defined by the earth radius and the atmosphere radius. 
-    Since the sun is far away, we model sunlight as parallel rays coming from infinity, so we only need to keep track of sunlight direction. 
-    We also define parameters such as Hr (Rayleigh scale height), Hm (Mie scale height), R0_scatter_coef (Raileigh scattering coefficient at sea level), M0_scatter_coef (Mie scattering coefficient at sea level),
-    which will be useful in calculating Rayleigh scattering and Mie scattering coefficients at other height levels. 
+    The rendering time of our scene significantly increases as we increase the number of samples on camera ray (V) and/or light source ray (L), 
+    as well as the image size. 
+    Below is a comparison table highlighting the substantial increase in render time.
+
+    <div id="comparisonTable">
+      <table>
+        <tr>
+          <th>Width</th>
+          <th>Height</th>
+          <th>Num of Samples on V</th>
+          <th>Num of Samples on L</th>
+          <th>Average Render Time</th>
+        </tr>
+        <tr>
+          <td>640</td>
+          <td>480</td>
+          <td>32</td>
+          <td>16</td>
+          <td>3.5593s</td>
+        </tr>
+        <tr>
+          <td>1900</td>
+          <td>1000</td>
+          <td>100</td>
+          <td>50</td>
+          <td>323.926s</td>
+        </tr>
+      
+      </table>
+    </div>
 
     <br>
 
-    This is how the model is defined in c++.
-</p>
+    Sky rendering is a crucial aspect of game engines, 
+    but as seen above, it is highly computationally expensive. 
+    To address this challenge, we explored various techniques to improve rendering speed. 
+    One common approach used in the industry is precomputing a lookup table,
+    where L values are calculated in advance for each camera location and viewing direction. 
+    
+    <br>
+     
+     Due to time constraints, we simplified the problem by fixing the camera location and only computing a lookup table for varying viewing directions. 
+     We create three seperate maps representing the three color channels, 
+     and the first three values within each map are keys to specify a viewing direction.
+     Our maps for width = 1900, height = 1000, num of samples on V = 100, num of samples on L = 50, sun angle = 0
+     can be found here:
 
-<div align="center">
-    <img src="image/modelCode.png" width="480px" />
-</div>
-<br>
+     <a href="/final/final_report/map.html"> Lookup Table</a>
 
-<h2 align="middle">Progress Reflection and Update Plan</h2>
-<p>
-    ​​We have fallen behind our schedule because the math involved in the project has taken longer than anticipated. There are many new concepts that we are not familiar with, and we have had to spend extra time reading and understanding the paper before we can begin to develop our own approach to sky rendering.
+
+     <br><br>
+     <div align="middle">
+      <table style="width:100%">
+        <tr align="center">
+          <td>
+            <img src="./images/precompute/precompute.jpeg" align="middle" width="400px"/>
+            <figcaption>Normal Render</figcaption>
+          </td>
+          <td>
+            <img src="./images/precompute/lookuptablerender.jpeg" align="middle" width="400px"/>
+            <figcaption>Render with lookup table</figcaption>
+          </td>
+        </tr>
+
+      </table>
+    </div>
 
     <br>
-    However, as for now, we have managed to gain a solid understanding of the necessary concepts and are making progress on the coding aspect of the problem. We recognize that it will be a great challenge for us to render rainbows on top of the sky image and to achieve real time rendering in the remaining time. Our baseline is to provide non-real time rendering of the sky with different viewing perspectives. However, we hope to remain committed to our original goals and to make more significant progress in the coming week.
 
-</p>
-<br>
+    We observed a significant improvement in rendering runtime, 
+    but it still falls short of real-time requirements. 
+    Achieving real-time rendering would require GPU parallelism or other advanced tools,
+    which we were unable to implement within our project timeline.
+
+    <br><br>
+
+    <div id="comparisonTable">
+      <table>
+        <tr>
+          <th>Width</th>
+          <th>Height</th>
+          <th>Num of Samples on V</th>
+          <th>Num of Samples on L</th>
+          <th>Average Render Time</th>
+        </tr>
+        <tr>
+          <td>1900</td>
+          <td>1000</td>
+          <td>100</td>
+          <td>50</td>
+          <td>6.2582s</td>
+        </tr>
+      
+      </table>
+    </div>
+
+    <br>
+
+  </p>
+<h2 align="middle"> Rainbow, or Halo? </h2>
+<h2 align="middle"> References </h2>
+<h2 align="middle"> Contributions </h2>
+
 
 
 </body>
