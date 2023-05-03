@@ -1,0 +1,204 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style>
+  body {
+    background-color: white;
+    padding: 100px;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    color: #121212;
+
+    letter-spacing: 1px;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+  kbd {
+    color: #121212;
+  }
+
+
+  #comparisonTable th {
+  background-color: rgb(197, 215, 249);
+  }
+
+/* 
+  #comparisonTable table, td, th {  
+    border: 1px solid #ddd;
+    text-align: left;
+  } */
+
+  #comparisonTable table {
+    border: 1px solid #ddd;
+    text-align: left;
+
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  #comparisonTable th {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 15px;
+  } 
+
+  #comparisonTable td {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 15px;
+  } 
+
+</style>
+<title>CS 184 Path Tracer</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script>
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+
+</head>
+
+
+<body>
+
+<h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2023</h1>
+<h1 align="middle">Final Project: Sky, and Rainbow</h1>
+<h2 align="middle">Zhihan Cheng, Yuerou Tang, Debby Lin, Long He</h2>
+
+<br>
+<!-- Add Website URL -->
+<h4>Proposal URL: <a href="https://cal-cs184-student.github.io/project-webpages-sp23-qs/final/proposal/proposal.html">https://cal-cs184-student.github.io/project-webpages-sp23-qs/final/proposal/proposal.html</a></h4>
+<h4>Milestone URL: <a href="https://cal-cs184-student.github.io/project-webpages-sp23-qs/final/milestone/milestone.html">https://cal-cs184-student.github.io/project-webpages-sp23-qs/final/milestone/milestone.html</a></h4>
+
+<h4>Presentation Slides: <a href="https://docs.google.com/presentation/d/1X-Q1tBVeLp8mKCGx8GPwmvqmqJyHFNyYadMLDevG_4E/edit?usp=sharing">https://docs.google.com/presentation/d/1X-Q1tBVeLp8mKCGx8GPwmvqmqJyHFNyYadMLDevG_4E/edit?usp=sharing</a></h4>
+<h4>Video Link: <a href="https://drive.google.com/file/d/1FMtKwod_yaLLsnQnkDgIgp_s0AnwtQw5/view?usp=sharing">https://drive.google.com/file/d/1FMtKwod_yaLLsnQnkDgIgp_s0AnwtQw5/view?usp=sharing</a></h4>
+
+<br><br>
+
+<!-- 
+<div align="center">
+
+  <img src="nishita_demo.png" width="480px" />
+  <figcaption align="middle">Rendered Sky from Nishita et al., Siggraph 1993</figcaption>
+</div> -->
+
+<!-- <br> -->
+
+
+<h2 align="middle"> What We Have So Far</h2>
+<p>
+    Sky rendering involves complex mathematical calculations, and our team has been conducting extensive research to better understand the math and physics behind atmospheric scattering. 
+
+    Our notes on atmospheric scattering so far is here:
+    <h3> Volume Rendering </h3>
+    <p>
+        Through research, we have learned that the Earth’s atmosphere can be modeled as a volume of gas with particles in it that interact with light. So, we start our research by exploring the concept of volume rendering. We learned concepts such as absorption, transmittance, extinction, emission, particle density and techniques such as ray-marching. By gaining a better understanding of volume rendering, we were able to approach the task of sky rendering with greater clarity and less abstraction.
+        We have experimented with volume rendering ourselves, and here are some results. 
+    </p>
+    <div align="center">
+        <img src="image/vr.png" width="480px" />
+    </div>
+
+    <h3> Set up for our scene </h3>
+    <!-- <h3 align = "middle"> Set up for our scene </h3> -->
+    <p>
+        Since our model will focus on atmospheric scattering, our assumption is that the light source that
+        we will get is the sun. However, if there is no scattering, then we won't see anything in the Sky unless
+        we're looking directly at the sun. Therefore, we will be simulating <b>single scattering</b> so that we can 
+        see the color of the sky. Tnis color is caused by sun light being deflected and scatteredn by particles light encountered, 
+        and the goal of our project is to simulate this color. We will be focusing on 2 kinds of scattering:
+        <ul>
+            <li>
+                Rayleigh scattering: scattering by small particles such as air particles 
+            </li>
+            <li>
+                Mie Scattering: scattering by aerosols such as dust. These molecules are generally bigger. 
+            </li>
+        </ul>
+    </p>
+    <h3> Color of the Sunlight</h3>
+    <p>
+        As we talked before, the color that we see when looking at the sky is mostly caused by the in-scattering of sunlight. 
+        To determine the color of a pixel on our final image, we need to integrate all the light along the ray which the pixel 
+        on the image is shooting. <br>
+
+        Suppose we only have 1 light ray from the source, then the color of the pixel is completely 
+        determined by the scattering of the single source light ray, and the intensity of the ray can give us the final color. <br>
+        <div align="center">
+            <img src="image/simplemodel.jpg" width="480px" />
+            <figcaption align="middle">Only 1 Source Light Ray </figcaption>
+        </div>
+    
+        <br>
+
+        However, in reality, our light source is oftentimes countless parallel rays coming from the sunlight, so the color of
+        our pixel at the end will be a composite of many scattered rays. So the color at the end should be \(\int_{P_c}^{P_a}L(X)dX\), 
+        an integration of all the light along the direction of our camera ray. <br>
+        <p align = "middle"><img src="image/fullmodel.jpg" width="480px" align = "middle" />
+        <figcaption align="middle">Multiple Source Light Ray </figcaption></p>
+
+        <br>
+        First let's look at each possible \(X\), the intersection of the source light ray with the camera ray. For a source light ray to reach the 
+        camera ray, it has to undergo a volume of atmosphere. Therefore, the amount of light that reaches our camera ray is governed by Beer-Lamber Law, and it 
+        will be \(L_{sun} = Sun\space Intensity * T(P_s, X)\). <br>
+        <p align = "middle"><img src="image/T(PsX).jpg" width="480px" align = "middle" />
+            <figcaption align="middle">Amount of light that pass through the atmosphere to reach our camera ray</figcaption></p>
+        Next, after the deflected light reaches our camera ray, it still has to pass some volume of atmosphere to evetually reach our camera. <br>
+        <p align = "middle"><img src="image/T(PcX).jpg" width="480px" align = "middle" />
+        <figcaption align="middle">Amount of light that pass through the atmosphere to reach our camera</figcaption></p>
+
+        <br>
+        This part of light
+        is therefore also governed by Beer-Lambert Law, and if we integrate with respect to all possible \(X\) on the camera ray, then our final integration 
+        will be \(L(P_c, P_a) = \int_{P_a}^{P_c}T(P_c, X)L_{sun}(X)dX\), where \(L_{sun} = Sun\space Intensity * T(P_s, X)\). 
+        
+        
+    </p>
+
+    
+</p>
+<br>
+
+<h2 align="middle"> Preliminary Results</h2>
+<p>
+    Apart from basic understanding of the math behind sky rendering, we have also built our atmosphere model. 
+    The model is defined as a spherical volume of gas surrounding another sphere representing the Earth. 
+    The size of these two spheres are defined by the earth radius and the atmosphere radius. 
+    Since the sun is far away, we model sunlight as parallel rays coming from infinity, so we only need to keep track of sunlight direction. 
+    We also define parameters such as Hr (Rayleigh scale height), Hm (Mie scale height), R0_scatter_coef (Raileigh scattering coefficient at sea level), M0_scatter_coef (Mie scattering coefficient at sea level),
+    which will be useful in calculating Rayleigh scattering and Mie scattering coefficients at other height levels. 
+
+    <br>
+
+    This is how the model is defined in c++.
+</p>
+
+<div align="center">
+    <img src="image/modelCode.png" width="480px" />
+</div>
+<br>
+
+<h2 align="middle">Progress Reflection and Update Plan</h2>
+<p>
+    ​​We have fallen behind our schedule because the math involved in the project has taken longer than anticipated. There are many new concepts that we are not familiar with, and we have had to spend extra time reading and understanding the paper before we can begin to develop our own approach to sky rendering.
+
+    <br>
+    However, as for now, we have managed to gain a solid understanding of the necessary concepts and are making progress on the coding aspect of the problem. We recognize that it will be a great challenge for us to render rainbows on top of the sky image and to achieve real time rendering in the remaining time. Our baseline is to provide non-real time rendering of the sky with different viewing perspectives. However, we hope to remain committed to our original goals and to make more significant progress in the coming week.
+
+</p>
+<br>
+
+
+</body>
+</html>
