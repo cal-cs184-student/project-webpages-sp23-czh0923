@@ -1,0 +1,169 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style>
+  body {
+    background-color: white;
+    padding: 100px;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    color: #121212;
+
+    letter-spacing: 1px;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+  kbd {
+    color: #121212;
+  }
+
+
+  #comparisonTable th {
+  background-color: rgb(197, 215, 249);
+  }
+
+/* 
+  #comparisonTable table, td, th {  
+    border: 1px solid #ddd;
+    text-align: left;
+  } */
+
+  #comparisonTable table {
+    border: 1px solid #ddd;
+    text-align: left;
+
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  #comparisonTable th {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 15px;
+  } 
+
+  #comparisonTable td {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 15px;
+  } 
+
+</style>
+<title>CS 184 Path Tracer</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script>
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+
+</head>
+
+
+<body>
+
+<h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2023</h1>
+<h1 align="middle">Final Project: Sky, and Rainbow</h1>
+<h2 align="middle">Zhihan Cheng, Yuerou Tang, Debby Lin, Long He</h2>
+
+<br>
+<!-- Add Website URL -->
+<h4>Proposal URL: <a href="https://cal-cs184-student.github.io/project-webpages-sp23-qs/final/proposal/proposal.html">https://cal-cs184-student.github.io/project-webpages-sp23-qs/final/proposal/proposal.html</a></h4>
+<h4>Milestone URL: <a href="https://cal-cs184-student.github.io/project-webpages-sp23-qs/final/milestone/milestone.html">https://cal-cs184-student.github.io/project-webpages-sp23-qs/final/milestone/milestone.html</a></h4>
+
+<h4>Presentation Slides: <a href="https://docs.google.com/presentation/d/1X-Q1tBVeLp8mKCGx8GPwmvqmqJyHFNyYadMLDevG_4E/edit?usp=sharing">https://docs.google.com/presentation/d/1X-Q1tBVeLp8mKCGx8GPwmvqmqJyHFNyYadMLDevG_4E/edit?usp=sharing</a></h4>
+<h4>Video Link: <a href="https://drive.google.com/file/d/1FMtKwod_yaLLsnQnkDgIgp_s0AnwtQw5/view?usp=sharing">https://drive.google.com/file/d/1FMtKwod_yaLLsnQnkDgIgp_s0AnwtQw5/view?usp=sharing</a></h4>
+
+<br><br>
+
+<!-- 
+<div align="center">
+
+  <img src="nishita_demo.png" width="480px" />
+  <figcaption align="middle">Rendered Sky from Nishita et al., Siggraph 1993</figcaption>
+</div> -->
+
+<!-- <br> -->
+
+
+<h2 align = "middle">Technical Report</h2>
+<p align = "middle">
+<h3 align = "middle"> Volume Rendering</h3>
+<p align = "middle">
+    The most central idea to our project is Volume Rendering, as this is how we determine the color of every pixel. We learned about Volume Render mostly from a series
+    of online lessons provided by <a href = "https://www.scratchapixel.com/lessons/3d-basic-rendering/volume-rendering-for-developers/intro-volume-rendering.html">Scratchapixel</a>.
+    <h4 align = "middle"> Scattering </h4>
+    The atmosphere is not vacuum. TIt contains small air particles and aerosols, and they caused scattering effects. We will be focusing on 2 kinds of scattering:
+    <ul>
+        <li>
+            Rayleigh scattering: scattering by small particles such as air particles 
+        </li>
+        <li>
+            Mie Scattering: scattering by aerosols such as dust. These molecules are generally bigger. 
+        </li>
+    </ul> <br> 
+    While the sunlight is usually not directly toward our eyes, we still can see light on the sky, and this is because sun light is being deflected and scattered by particles 
+    the light encountered. These scattering effects dominated the color and intensity of light that the camera ray received. <br>
+    Out-scattering is the main reason why in the atmosphere, as light travels, it diminishes. The amount of light that can pass throught the atmosphere is governed by Beer-Lamber Law, and the transmittence of that in that medium
+    is \(T = e^{-distance*\sigma}\), where \(\sigma\) is the scattering coefficient of the medium. The equations for Rayleigh and Mie scattering can tell us this coefficient. <br>
+    For Rayleigh scattering, $$\beta(h) = \frac{8\pi^3(n^2-1)^2}{3N\lambda^4}e^{-\frac{h}{H_R}}$$. \(h\) is the height of which we are calculating the scattering coefficient.<br>
+    For Mie scattering, $$\beta(h) = \beta(0)e^{-\frac{h}{H_M}}$$. \(\beta(0)\) is the Mie scattering coefficient at sea level. \(h\) is the height of which we are calculating the scattering coefficient. <br>
+    Therefore, both scattering coefficients vavaries with elevation. <br>
+
+    <h4 align = "middle"> Rendering the Volume</h4>
+    For every pixel on the screen, we shoot a ray from the pixel, and integrate along this camera ray to obtain the final color of the pixel. <br>
+    <figure align = "middle">
+        <img src="milestone/image/simplemodel.jpg" width = "400px" align = "middle">
+        <figcaption>We will integrate along the purple ray to obtain the final pixel of the source pixel of the purple ray. The outer circle is the atmosphere, and the inner circle is the earth. \(P_c\) is the position of the camera,
+            \(P_a\) is where our camera ray hits the edge of the atmosphere, and \(P_s\) is where the sunlight hits the atmosphere. 
+        </figcaption>
+      </figure>
+    However, since the sun is very far away, sunlight that falls on the earth can roughly be seen as parallel light. Therefore, our full model looks like this: <br>
+    <figure align = "middle">
+        <img src="milestone/image/fullmodel.jpg" width = "400px" align = "middle">
+            <figcaption>\(P_{si}\) are where the parallel sunlights hits the atmosphere. 
+            </figcaption>
+        </figure>
+    Therefore, at each segment of the camera ray, we have different lights fall on it, because:
+    <ol>
+        <li>
+            Each segment will be occluded by previous segments;
+        </li>
+        <li>
+            The amount of sunlight received by each segment is also different, as the distance that sunlight need to travel within the atmosphere in order to hit that segment of the camera Ray
+            is different. 
+        </li>
+    </ol>
+    Therefore, to integrate along the camera ray, for each segment on 
+    the camera ray, we will have to calculate, how much light from the light source falls onto it. This is done by another integration (so we will also be integrating on the yellow lines
+    in the diagram above to calculate the amount of light that reaches the intersection of yellow and purple lines). You might wondering why do we need to integrate along the yellow lines to
+    obtain the amount of sunlight that reaches the camera ray, instead of simply calculating the transmittence with Beer Law and multiply it with intensity? Remember that both Rayleight and Mie scattering coefficients varies with elevation, and as sunlight travels, the elevation changes,
+    so the transmittence of light changes as it travels. Therefore, the sunlight that reaches one segment $X$ of the 
+    camera ray can be expressed as: $$L_{sun}(X) = Sun\space Intensity * T(X, P_s) * P(V,L)*\beta$$. $P(V,L)$ is the phase function for scattering, and it tells us about how much light is scattered for a particular viewing direction. 
+    It's givien by the type of scattering. We will do the integration at the end to combine the two integrals. <br>
+    After obtaining the amount of light at each segment, we can sum them up to obtain the final color, taking into consideration that to eventually reach the camera, 
+    the camera ray will also travel through the atmosphere, and scattering will also occur. Therefore, the conceptual formula is: $$L=\int_{P_c}^{P_a} L_{sun}(X)T(P_c, X)dX$$, and we 
+    substitute $L_{sun}$ into the integration. <br>
+    In practice, for each segment, we shoot a ray from the segment, and divide this light source ray into another 8 segments, and sum up their resulted light vector. Then for each segment on the camera ray, 
+    we multiply the sumed light vector with the distance the light will travel in one segment and the transmittence using the scattering coefficient at the end of the segment. (This is basically a Riemann sum along the camera ray). <br>
+    One modification that we made is instead of assuming that the light source ray is sampled from the center of the segment, we assumed that the light ray is from the end of the segment, because when
+    we were doing calculations, we assumed the light source ray traveled through the whole sample (the distance that the light will travel that we multiplied was the length of the segment), so we thought it would be more accurate to sample the segment at the end of it. 
+<h3 align = "middle">Rainbow, or Halo?</h3>
+    
+</p>
+
+    
+</p>
+
+</body>
+</html>
