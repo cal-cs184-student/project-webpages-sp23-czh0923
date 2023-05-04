@@ -88,7 +88,7 @@
 
 <h4>Presentation Slides: <a href="https://docs.google.com/presentation/d/1X-Q1tBVeLp8mKCGx8GPwmvqmqJyHFNyYadMLDevG_4E/edit?usp=sharing">https://docs.google.com/presentation/d/1X-Q1tBVeLp8mKCGx8GPwmvqmqJyHFNyYadMLDevG_4E/edit?usp=sharing</a></h4>
 <h4>Video Link: <a href="https://drive.google.com/file/d/1FMtKwod_yaLLsnQnkDgIgp_s0AnwtQw5/view?usp=sharing">https://drive.google.com/file/d/1FMtKwod_yaLLsnQnkDgIgp_s0AnwtQw5/view?usp=sharing</a></h4> -->
-<h4>Video Link: <a href=" ">https://drive.google.com/file/d/1wFnEAqtGcXkU3kNMjnAy4wwc8KSx2WOK/view?usp=drivesdk</a></h4>
+<h4 align="middle">Video Link: <a href=" ">https://drive.google.com/file/d/1wFnEAqtGcXkU3kNMjnAy4wwc8KSx2WOK/view?usp=drivesdk</a></h4>
   <br><br>
 
   <!-- 
@@ -154,7 +154,7 @@
     Below is an illustration of our atmosphere model. 
 
     <figure align="middle">
-      <img src="/final/final_report/images/atmosphere_model.jpeg" width="350px" align="middle">
+      <img src="/final/final_report/images/atmosphereModel.jpeg" width="350px" align="middle">
       </figcaption>
     </figure>
 
@@ -283,7 +283,7 @@
           <figcaption>Angle = 30.34</figcaption>
         </td>
       </tr>
-      <tr>
+      <tr align="center">
         <td>
           <img src="./images/normal/skydome.0030.png" align="middle" width="170px" />
           <figcaption>Angle = 36.40</figcaption>
@@ -309,7 +309,7 @@
           <figcaption>Angle = 66.74</figcaption>
         </td>
       </tr>
-      <tr>
+      <tr align="center">
         <td>
           <img src="./images/normal/skydome.0060.png" align="middle" width="170px" />
           <figcaption>Angle = 72.81</figcaption>
@@ -705,6 +705,8 @@
   when I tried to borrow code from class projects, it took me an hour to realize that CGL was a custom
   library written by the staff, and we were NOT using OpenGL directly!
   <h2 align="middle"> References </h2>
+
+  <p>
   http://download.nvidia.com/developer/SDK/Individual_Samples/DEMOS/Direct3D9/src/HLSL_RainbowFogbow/docs/RainbowFogbow.pdf <br>
   https://www.scratchapixel.com/lessons/procedural-generation-virtual-worlds/simulating-sky/simulating-colors-of-the-sky.html <br>
   http://nishitalab.org/user/nis/cdrom/sig93_nis.pdf<br>
@@ -712,15 +714,89 @@
   https://64.github.io/tonemapping/<br>
   http://hyperphysics.phy-astr.gsu.edu/hbase/atmos/blusky.html<br>
   https://inria.hal.science/inria-00288758/document<br>
-
+  </p>
 
   <h2 align="middle"> Contributions </h2>
-  Zhihan Cheng: Implemented sky rendering, tone mapping, real-time rendering, wrote final Report, recorded video
-  Yuerou Tang: Implemented sky rendering, rainbow, wrote final report, recorded video
-  Long He: Implemented sky rendering, rainbow, wrote final report, recorded video
-  Debby Lin: Wrote proposal
+  <p>
+  Zhihan Cheng: Implemented sky rendering, tone mapping, real-time rendering, wrote final Report, recorded video <br>
+  Yuerou Tang: Implemented sky rendering, rainbow, wrote final report, recorded video <br>
+  Long He: Implemented sky rendering, rainbow, wrote final report, recorded video <br>
+  Debby Lin: Wrote proposal <br>
+  </p>
 
 
+  <br>
+  <h2 align="middle"> Gallery </h2>
+  <!-- <p align = "center">
+    <img src="./main.gif" align="middle" width="400px" />
+  </p> -->
+
+  <!-- <br> -->
+
+  <p>
+    This is what the sky could look like is only certain wavelength can be reflected.
+  </p>
+
+  <div align="middle">
+    <table style="width:100%">
+      <tr align="center">
+        <td>
+          <img src="./images/gallery/only440nm_50.jpeg" align="middle" width="340px" />
+          <figcaption>Only 440nm Scattering</figcaption>
+        </td>
+        <td>
+          <img src="./images/gallery/only550nm_50.jpeg" align="middle" width="340px" />
+          <figcaption>Only 550nm Scattering</figcaption>
+        </td>
+        <td>
+          <img src="./images/gallery/only680nm_50.jpeg" align="middle" width="340px" />
+          <figcaption>Only 680nm Scattering</figcaption>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <br><br>
+
+  <p>
+    Rayleigh scattering occurs when light interacts with small particles in the atmosphere, 
+    such as nitrogen and oxygen molecules. 
+    This type of scattering is responsible for the blue color of the sky during the day, 
+    and the red and orange colors seen during sunrise and sunset. 
+    This is because shorter-wavelength blue light is scattered more than longer-wavelength red and orange light.
+    <br>
+    On the other hand, Mie scattering occurs when light interacts with larger particles in the atmosphere, 
+    such as dust, smoke, and water droplets. 
+    This type of scattering is responsible for phenomena such as haze and fog.
+  </p>
+
+  <div align="middle">
+    <table style="width:100%">
+      <tr align="center">
+        <td>
+          <img src="./images/gallery/only_rayleigh_50.jpeg" align="middle" width="340px" />
+          <figcaption>Only Rayleigh Scattering</figcaption>
+        </td>
+        <td>
+          <img src="./images/gallery/only_mie_50.jpeg" align="middle" width="340px" />
+          <figcaption>Only Mie Scattering</figcaption>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <br>
+
+  <p>
+    This image of a sunset was created by stitching together 90 individual images, 
+    each taken with a different sun angle. 
+    The result is the view of the sun setting over the horizon. The image was not tone mapped.
+  </p>
+  <p align = "center">
+    <img src="./main.gif" align="middle" width="600px" />
+    <!-- <figcaption align="center">Sunset</figcaption> -->
+  </p>
+  
 
 </body>
 
